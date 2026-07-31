@@ -127,6 +127,7 @@ interface ProjectSlide {
   githubUrl?: string;
   demoUrl?: string;
   demoButtonLabel?: string;
+  isInternalLink?: boolean;
   placeholderLabel: string;
 }
 
@@ -154,7 +155,7 @@ const PROJECTS: ProjectSlide[] = [
     ],
     mockupImage: '/sag&salt.png',
     githubUrl: 'https://github.com/manan/sage-and-salt',
-    demoUrl: '#',
+    demoUrl: 'https://sage-and-salt.vercel.app/',
     demoButtonLabel: 'Live Demo ↗',
     placeholderLabel: 'SAGE & SALT MOCKUP PREVIEW',
   },
@@ -184,8 +185,9 @@ const PROJECTS: ProjectSlide[] = [
     ],
     mockupImage: '/medical.png',
     githubUrl: '#',
-    demoUrl: '#',
-    demoButtonLabel: 'View Case Study ↗',
+    demoUrl: '/projects/medicare',
+    demoButtonLabel: 'VIEW CASE STUDY →',
+    isInternalLink: true,
     placeholderLabel: 'MULTILINGUAL AI HEALTHCARE MOCKUP PREVIEW',
   },
 ];
@@ -438,14 +440,31 @@ export default function Projects() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-3.5 border-t border-[#8E9B4D]/15">
-                <a
-                  href={currentProject.demoUrl || '#'}
-                  target={currentProject.demoUrl && currentProject.demoUrl !== '#' ? '_blank' : undefined}
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 bg-[#8E9B4D] hover:bg-[#a6b256] text-[#070C08] font-mono text-[11px] font-semibold uppercase tracking-wider px-4 py-2 rounded-[4px] shadow-sm transition-all duration-300 hover:translate-x-0.5 cursor-pointer"
-                >
-                  {currentProject.demoButtonLabel || 'Live Demo ↗'}
-                </a>
+                {currentProject.isInternalLink ? (
+                  <a
+                    href={currentProject.demoUrl}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentProject.demoUrl) {
+                        window.history.pushState({}, '', currentProject.demoUrl);
+                        window.dispatchEvent(new Event('popstate'));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 bg-[#8E9B4D] hover:bg-[#a6b256] text-[#070C08] font-mono text-[11px] font-semibold uppercase tracking-wider px-4 py-2 rounded-[4px] shadow-sm transition-all duration-300 hover:translate-x-0.5 cursor-pointer"
+                  >
+                    {currentProject.demoButtonLabel || 'VIEW CASE STUDY →'}
+                  </a>
+                ) : (
+                  <a
+                    href={currentProject.demoUrl || '#'}
+                    target={currentProject.demoUrl && currentProject.demoUrl !== '#' ? '_blank' : undefined}
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-[#8E9B4D] hover:bg-[#a6b256] text-[#070C08] font-mono text-[11px] font-semibold uppercase tracking-wider px-4 py-2 rounded-[4px] shadow-sm transition-all duration-300 hover:translate-x-0.5 cursor-pointer"
+                  >
+                    {currentProject.demoButtonLabel || 'Live Demo ↗'}
+                  </a>
+                )}
                 <a
                   href={currentProject.githubUrl || '#'}
                   target={currentProject.githubUrl && currentProject.githubUrl !== '#' ? '_blank' : undefined}
