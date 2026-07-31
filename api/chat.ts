@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Groq from 'groq-sdk';
-import { mananKnowledge } from '../src/data/mananKnowledge';
+import { mananKnowledge } from '../lib/mananKnowledge';
 
 // Helper function to build authoritative system prompt safely inside handler execution
 function getSystemPrompt(): string {

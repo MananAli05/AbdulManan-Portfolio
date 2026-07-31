@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import Groq, { toFile } from 'groq-sdk';
 import multer from 'multer';
 import path from 'path';
-import { mananKnowledge } from '../src/data/mananKnowledge';
+import { mananKnowledge } from '../lib/mananKnowledge';
 
 // Load environment variables from .env.local first, fallback to .env
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });

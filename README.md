@@ -192,12 +192,14 @@ AbdulManan-Portfolio/
 │   ├── chat.ts           # Serverless endpoint for text chat via Groq
 │   ├── transcribe.ts     # Serverless endpoint for voice note STT via Groq
 │   └── retell-call.ts    # Serverless endpoint for Retell Web Call session tokens
+├── lib/
+│   └── mananKnowledge.ts # Structured single source of truth portfolio context
 ├── server/
 │   └── dev-server.ts     # Express server for local development (/api proxy)
 ├── src/
 │   ├── components/       # UI components (FloatingAiWidget, Navbar, Hero, etc.)
 │   ├── data/
-│   │   └── mananKnowledge.ts  # Structured single source of truth portfolio context
+│   │   └── mananKnowledge.ts  # Re-exports lib/mananKnowledge for frontend backwards compatibility
 │   ├── App.tsx           # Main Application entry component
 │   └── main.tsx          # Vite React root mounting point
 ├── public/               # Static assets & pdf documents
