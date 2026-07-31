@@ -13,6 +13,18 @@ The portfolio goes beyond a traditional static website by including **Manan AI**
 
 ---
 
+## Preview
+
+![Abdul Manan AI Engineer Portfolio](./public/readme/portfolio-home.png)
+
+*Abdul Manan AI Engineer Portfolio*
+
+### Featured Projects
+
+![Featured AI Projects](./public/readme/projects.png)
+
+---
+
 ## About the Portfolio
 
 This portfolio was designed as an interactive representation of my work as an AI Engineer.
@@ -48,6 +60,8 @@ It is designed to answer questions about my:
 
 The assistant uses a structured portfolio knowledge layer as its source of professional information.
 
+![Manan AI Chat Assistant](./public/readme/manan-ai-chat.png)
+
 ### Text Chat
 
 Visitors can communicate with Manan AI using natural-language questions.
@@ -71,6 +85,8 @@ The portfolio includes a browser-based real-time AI voice agent powered by Retel
 Visitors can start a live voice conversation with Manan AI and ask about my projects, experience, technical background, and work.
 
 The voice interface supports real-time conversation states, microphone control, call termination, and responsive call UI.
+
+![Manan AI Real-Time Voice Agent](./public/readme/manan-ai-voice.png)
 
 ---
 
@@ -185,6 +201,11 @@ AbdulManan-Portfolio/
 │   ├── App.tsx           # Main Application entry component
 │   └── main.tsx          # Vite React root mounting point
 ├── public/               # Static assets & pdf documents
+│   └── readme/           # README screenshots
+│       ├── portfolio-home.png
+│       ├── projects.png
+│       ├── manan-ai-chat.png
+│       └── manan-ai-voice.png
 ├── .env.example          # Environment variable template with placeholders
 ├── package.json          # Dependencies and script definitions
 └── vite.config.ts        # Vite configuration & /api development proxy
