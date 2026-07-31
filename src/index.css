@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* LOCAL NEUE MONTREAL FONT FACE DEFINITIONS */
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-primary: #8E9B4D;
+  --color-on-primary: #080A08;
+  --color-background: #080A08;
+  --color-surface: #0B0D0B;
+  --color-on-surface: #F3F3EE;
+
+  --font-sans: "Neue Montreal", sans-serif;
+  --font-headline-lg: "Neue Montreal", sans-serif;
+  --font-headline-sm: "Neue Montreal", sans-serif;
+  --font-body-lg: "Neue Montreal", sans-serif;
+  --font-label-md: "JetBrains Mono", monospace;
+  --font-label-sm: "JetBrains Mono", monospace;
+
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  *, ::before, ::after {
+    font-family: "Neue Montreal", sans-serif;
+  }
+
+  html,
+  body,
+  input,
+  textarea,
+  select {
+    background-color: #080A08;
+    color: #F3F3EE;
+    font-family: "Neue Montreal", sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, button, a, span, label, div {
+    font-family: "Neue Montreal", sans-serif;
+  }
+
+  .font-mono, code, pre {
+    font-family: "JetBrains Mono", monospace !important;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(11, 13, 11, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(142, 155, 77, 0.15);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-1 {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-fade-2 {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  opacity: 0;
+}
+
+.hero-fade-3 {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+.hero-fade-4 {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #080A08; }
+::-webkit-scrollbar-thumb { background: #46483a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #8E9B4D; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
