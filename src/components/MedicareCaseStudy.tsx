@@ -1,8 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+// Reusable Phone Frame Container with sleek device bezel
+function PhoneFrame({
+  src,
+  alt,
+  caption,
+  aspectRatio = 'aspect-[9/19.5]',
+  className = '',
+  onImageClick,
+}: {
+  src: string;
+  alt: string;
+  caption?: string;
+  aspectRatio?: string;
+  className?: string;
+  onImageClick?: (src: string, alt: string) => void;
+}) {
+  return (
+    <div className={`flex flex-col items-center group ${className}`}>
+      {/* Device Body */}
+      <div
+        onClick={() => onImageClick && onImageClick(src, alt)}
+        className={`relative w-full ${aspectRatio} max-w-[260px] sm:max-w-[280px] rounded-[24px] bg-[#0A0F0B] p-2 border border-[#8E9B4D]/35 shadow-[0_15px_35px_rgba(0,0,0,0.6)] group-hover:border-[#8E9B4D]/60 group-hover:shadow-[0_0_25px_rgba(142,155,77,0.18)] transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between`}
+      >
+        {/* Subtle top notch / speaker speaker bar */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1.5 rounded-full bg-[#182416] border border-[#8E9B4D]/20 z-20 pointer-events-none" />
+
+        {/* Screenshot Container */}
+        <div className="relative w-full h-full rounded-[18px] overflow-hidden bg-[#070C08]">
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            className="w-full h-full object-cover rounded-[18px] transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+          {/* Faint hover overlay hint */}
+          <div className="absolute inset-0 bg-[#8E9B4D]/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center justify-center">
+            <span className="bg-[#070C08]/80 text-[#E9E5DF] text-[10px] font-mono px-2.5 py-1 rounded border border-[#8E9B4D]/30 backdrop-blur-sm">
+              Click to view
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Caption if provided */}
+      {caption && (
+        <p className="mt-2.5 text-[11px] font-mono text-[#9EA298] text-center max-w-[240px]">
+          {caption}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function MedicareCaseStudy() {
+  const [activeImage, setActiveImage] = useState<{ src: string; alt: string } | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveImage(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleBackToProjects = (e: React.MouseEvent) => {
@@ -21,423 +87,301 @@ export default function MedicareCaseStudy() {
     }, 50);
   };
 
-  return (
-    <div className="min-h-screen w-full bg-[#070C08] text-[#F3F3EE] selection:bg-[#8E9B4D] selection:text-[#070C08] relative isolate">
-      {/* Ambient background glow */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(142,155,77,0.08)_0%,transparent_70%)] pointer-events-none -z-10" />
+  const handleImageClick = (src: string, alt: string) => {
+    setActiveImage({ src, alt });
+  };
 
-      {/* TOP NAVIGATION BAR */}
-      <header className="sticky top-0 z-50 w-full bg-[#070C08]/90 backdrop-blur-md border-b border-[#8E9B4D]/20 px-4 sm:px-6 lg:px-12 py-3.5">
-        <div className="max-w-[1240px] mx-auto flex items-center justify-between">
+  return (
+    <div className="min-h-screen w-full bg-[#070C08] text-[#F3F3EE] selection:bg-[#8E9B4D] selection:text-[#070C08] relative isolate font-sans">
+      {/* Subtle ambient gradient background */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_75%_50%_at_50%_-5%,rgba(142,155,77,0.07)_0%,transparent_70%)] pointer-events-none -z-10" />
+
+      {/* TOP STICKY NAVIGATION BAR */}
+      <header className="sticky top-0 z-40 w-full bg-[#070C08]/90 backdrop-blur-md border-b border-[#8E9B4D]/20 px-4 sm:px-6 lg:px-12 py-3.5">
+        <div className="max-w-[1140px] mx-auto flex items-center justify-between">
           <a
             href="/#projects"
             onClick={handleBackToProjects}
             className="inline-flex items-center gap-2 text-xs font-mono text-[#8E9B4D] hover:text-[#A7B45C] transition-colors group cursor-pointer"
           >
             <span className="transition-transform group-hover:-translate-x-1">←</span>
-            <span>BACK TO PROJECTS</span>
+            <span>Back to Projects</span>
           </a>
 
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#8E9B4D] animate-pulse" />
-            <span className="font-mono text-[11px] text-[#9EA298] uppercase tracking-wider hidden sm:inline">
-              CASE STUDY // AI HEALTHCARE
+            <span className="w-2 h-2 rounded-full bg-[#8E9B4D]" />
+            <span className="font-mono text-[11px] text-[#9EA298] tracking-wide">
+              MediCare Project
             </span>
           </div>
         </div>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-12 pb-24 space-y-20 sm:space-y-28">
+      {/* MAIN CONTENT AREA */}
+      <main className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-12 pb-20 space-y-16 sm:space-y-24">
 
         {/* HERO SECTION */}
-        <section className="space-y-6 border-b border-[#8E9B4D]/15 pb-12 sm:pb-16">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="px-2.5 py-1 rounded-[4px] bg-[#8E9B4D]/10 border border-[#8E9B4D]/30 text-[#8E9B4D] font-mono text-[11px] font-semibold tracking-wider uppercase">
-              CASE STUDY
-            </span>
-            <span className="text-xs font-mono text-[#9EA298]">
-              AI HEALTHCARE / MULTILINGUAL SYSTEMS
-            </span>
-          </div>
-
-          <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[0.96] tracking-[0.02em] text-[#E9E5DF] font-sans">
-            MEDICARE
-          </h1>
-
-          <p className="text-lg sm:text-xl md:text-2xl text-[#8E9B4D] font-medium max-w-[820px] leading-snug">
-            Multilingual AI-Powered Medical Assistant
-          </p>
-
-          <p className="text-[#9EA298] text-sm sm:text-base leading-relaxed max-w-[760px]">
-            An AI-powered mobile health assistant designed to make symptom screening, chest X-ray analysis, and lab report interpretation more accessible through multilingual voice and AI capabilities.
-          </p>
-
-          {/* Technology Chips */}
-          <div className="pt-3 flex flex-wrap gap-2">
-            {['Flutter', 'FastAPI', 'Python', 'TensorFlow', 'scikit-learn', 'EasyOCR', 'Groq', 'Firebase', 'Supabase', 'SQLite'].map((tech) => (
-              <span
-                key={tech}
-                className="px-3 py-1 rounded-[4px] bg-[#0E150D] border border-[#8E9B4D]/25 font-mono text-xs text-[#E9E5DF] shadow-sm hover:border-[#8E9B4D]/50 transition-colors"
-              >
-                {tech}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-[#8E9B4D]/15 pb-12 sm:pb-16">
+          
+          {/* Left Column: Hero Text & Stack Pills */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#121B10] border border-[#8E9B4D]/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8E9B4D]" />
+              <span className="font-mono text-[11px] text-[#8E9B4D] font-medium tracking-wider uppercase">
+                AI HEALTHCARE PROJECT
               </span>
-            ))}
-          </div>
-        </section>
+            </div>
 
-        {/* 01 — THE PROBLEM */}
-        <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">01 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              THE PROBLEM
-            </h2>
-          </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#E9E5DF]">
+              MediCare
+            </h1>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E9E5DF] tracking-tight">
-            Making Medical Information Easier to Understand
-          </h3>
-
-          <p className="text-[#9EA298] text-sm sm:text-base leading-relaxed max-w-[820px]">
-            Healthcare information is often locked behind complex medical jargon, dense laboratory reports, and language barriers. Millions of patients struggle to assess preliminary symptoms or understand routine medical diagnostic reports before consulting specialists.
-          </p>
-
-          {/* Problem Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-            {[
-              {
-                title: 'Complex Medical Reports',
-                desc: 'Difficulty understanding technical English lab values and diagnostic terminology.',
-              },
-              {
-                title: 'Limited Specialist Access',
-                desc: 'Long wait times and geographical barriers for initial diagnostic guidance.',
-              },
-              {
-                title: 'Dense X-Ray & Lab Data',
-                desc: 'Inability for non-technical patients to interpret raw radiology or blood work values.',
-              },
-              {
-                title: 'Urdu Language Barriers',
-                desc: 'Lack of accessible medical AI tools supporting spoken Urdu and Roman Urdu input.',
-              },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="p-5 rounded-[8px] bg-[#0E150D] border border-[#8E9B4D]/20 hover:border-[#8E9B4D]/40 transition-colors space-y-2"
-              >
-                <div className="w-7 h-7 rounded-[4px] bg-[#8E9B4D]/10 text-[#8E9B4D] font-mono text-xs font-bold flex items-center justify-center">
-                  0{idx + 1}
-                </div>
-                <h4 className="text-sm font-bold text-[#E9E5DF]">{item.title}</h4>
-                <p className="text-xs text-[#9EA298] leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Medical Disclaimer Banner */}
-          <div className="p-4 rounded-[6px] bg-[#121B10] border border-[#8E9B4D]/35 text-xs text-[#E9E5DF]/90 space-y-1">
-            <span className="font-mono font-bold text-[#8E9B4D] uppercase tracking-wider block">
-              ⚠ AI-ASSISTED SCREENING DISCLAIMER
-            </span>
-            <p className="text-[#9EA298] leading-relaxed">
-              MediCare is engineered strictly as an AI-assisted preliminary screening and educational information system. It is <strong className="text-[#E9E5DF]">not a replacement for licensed medical doctors</strong> and does not provide definitive medical diagnoses or clinical treatment prescriptions.
+            <p className="text-lg sm:text-xl font-medium text-[#8E9B4D]">
+              Multilingual AI-Powered Medical Assistant
             </p>
-          </div>
-        </section>
 
-        {/* 02 — THE SOLUTION */}
-        <section className="space-y-8">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">02 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              THE SOLUTION
-            </h2>
-          </div>
+            <p className="text-[#9EA298] text-sm sm:text-base leading-relaxed max-w-[580px]">
+              A mobile health assistant that combines machine learning, computer vision, OCR and multilingual voice AI to make health information easier to understand in English and Urdu.
+            </p>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E9E5DF] tracking-tight">
-            Three Core AI Pipelines in One Mobile Experience
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Feature Block 1 */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4 hover:border-[#8E9B4D]/50 transition-colors flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="px-2.5 py-1 rounded bg-[#8E9B4D]/15 text-[#8E9B4D] font-mono text-[10px] uppercase font-bold tracking-wider inline-block">
-                  AI PIPELINE 01
-                </div>
-                <h4 className="text-xl font-bold text-[#E9E5DF]">SYMPTOM CHECKER</h4>
-                <p className="text-xs text-[#9EA298] leading-relaxed">
-                  User enters or speaks symptoms in natural language. The system processes input and produces ranked disease predictions with confidence ratings, severity assessment, disease descriptions, and recommended precautions.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-[#8E9B4D]/15 font-mono text-[11px] text-[#8E9B4D]">
-                scikit-learn · LLaMA 3.3 · Weighted ML
-              </div>
-            </div>
-
-            {/* Feature Block 2 */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4 hover:border-[#8E9B4D]/50 transition-colors flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="px-2.5 py-1 rounded bg-[#8E9B4D]/15 text-[#8E9B4D] font-mono text-[10px] uppercase font-bold tracking-wider inline-block">
-                  AI PIPELINE 02
-                </div>
-                <h4 className="text-xl font-bold text-[#E9E5DF]">CHEST X-RAY ANALYSIS</h4>
-                <p className="text-xs text-[#9EA298] leading-relaxed">
-                  User uploads a chest X-ray image. A custom TensorFlow/Keras Convolutional Neural Network (CNN) analyzes image patterns and classifies the scan as NORMAL or PNEUMONIA with confidence probability.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-[#8E9B4D]/15 font-mono text-[11px] text-[#8E9B4D]">
-                TensorFlow · Keras CNN · Sigmoid 0–1
-              </div>
-            </div>
-
-            {/* Feature Block 3 */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4 hover:border-[#8E9B4D]/50 transition-colors flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="px-2.5 py-1 rounded bg-[#8E9B4D]/15 text-[#8E9B4D] font-mono text-[10px] uppercase font-bold tracking-wider inline-block">
-                  AI PIPELINE 03
-                </div>
-                <h4 className="text-xl font-bold text-[#E9E5DF]">LAB REPORT READER</h4>
-                <p className="text-xs text-[#9EA298] leading-relaxed">
-                  User captures or uploads a lab report photo. EasyOCR extracts text; custom alias matching maps test names, extracts numerical values, and categorizes results as Normal, Low, or High relative to medical reference ranges.
-                </p>
-              </div>
-              <div className="pt-3 border-t border-[#8E9B4D]/15 font-mono text-[11px] text-[#8E9B4D]">
-                EasyOCR · Image Upscaling · Range Matching
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 03 — MULTILINGUAL VOICE EXPERIENCE */}
-        <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">03 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              MULTILINGUAL VOICE EXPERIENCE
-            </h2>
-          </div>
-
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E9E5DF] tracking-tight">
-            Seamless Voice NLP Across English, Urdu &amp; Roman Urdu
-          </h3>
-
-          <p className="text-[#9EA298] text-sm sm:text-base leading-relaxed max-w-[820px]">
-            To overcome language barriers, MediCare implements a speech and translation architecture. Spoken audio in English, Urdu, or Roman Urdu is transcribed via Groq Whisper, mapped to medical symptom taxonomies by LLaMA 3.3, and spoken back in Urdu using text-to-speech synthesis.
-          </p>
-
-          {/* Pipeline Visual Flow */}
-          <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/30 space-y-6">
-            <span className="font-mono text-xs text-[#8E9B4D] uppercase tracking-wider font-bold block">
-              END-TO-END VOICE &amp; NLP PIPELINE
-            </span>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-7 gap-3 text-center">
-              {[
-                'USER SPEAKS',
-                'GROQ WHISPER',
-                'SPEECH TO TEXT',
-                'LLAMA 3.3',
-                'SYMPTOM MAPPING',
-                'AI RESULT',
-                'URDU TTS',
-              ].map((step, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20">
-                  <span className="font-mono text-[10px] text-[#8E9B4D] font-bold mb-1">0{idx + 1}</span>
-                  <span className="font-mono text-xs text-[#E9E5DF] font-semibold">{step}</span>
-                </div>
+            {/* Compact Tech Stack Pills */}
+            <div className="pt-2 flex flex-wrap gap-2">
+              {['Flutter', 'FastAPI', 'Python', 'TensorFlow', 'Groq', 'Supabase'].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 rounded-[5px] bg-[#0E150D] border border-[#8E9B4D]/25 font-mono text-xs text-[#E9E5DF]"
+                >
+                  {tech}
+                </span>
               ))}
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#8E9B4D]/15 text-xs text-[#9EA298]">
-              <div>
-                <strong className="text-[#E9E5DF] block font-mono mb-1">English Input</strong>
-                Direct speech-to-text and symptom matching for English medical terms.
-              </div>
-              <div>
-                <strong className="text-[#E9E5DF] block font-mono mb-1">Urdu Script &amp; Voice</strong>
-                Native Urdu speech recognition and translated medical summaries.
-              </div>
-              <div>
-                <strong className="text-[#E9E5DF] block font-mono mb-1">Roman Urdu Support</strong>
-                LLaMA translates phonetically spelled Roman Urdu into structured symptoms.
-              </div>
-              <div>
-                <strong className="text-[#E9E5DF] block font-mono mb-1">Spoken Summaries</strong>
-                Urdu Text-to-Speech delivers voice explanations for low-literacy users.
-              </div>
+          {/* Right Column: Hero Product Visual inside Phone Frame */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="relative">
+              {/* Subtle Olive Glow Ring */}
+              <div className="absolute -inset-4 bg-radial from-[#8E9B4D]/15 via-transparent to-transparent opacity-75 blur-xl pointer-events-none" />
+              <PhoneFrame
+                src="/app-images/Dashboard.jpeg"
+                alt="MediCare App Dashboard Screen"
+                caption="MediCare Mobile Application Dashboard"
+                onImageClick={handleImageClick}
+              />
+            </div>
+          </div>
+
+        </section>
+
+        {/* QUICK OVERVIEW BAR */}
+        <section className="p-5 sm:p-6 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 shadow-lg">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[#8E9B4D]/20">
+            <div className="pr-3">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-1">
+                ROLE
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-[#E9E5DF]">
+                AI / ML Developer
+              </span>
+            </div>
+            <div className="pt-3 sm:pt-0 sm:px-4">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-1">
+                PLATFORM
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-[#E9E5DF]">
+                Flutter Mobile App
+              </span>
+            </div>
+            <div className="pt-3 sm:pt-0 sm:px-4">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-1">
+                BACKEND
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-[#E9E5DF]">
+                FastAPI Server
+              </span>
+            </div>
+            <div className="pt-3 sm:pt-0 sm:pl-4">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-1">
+                FOCUS
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-[#E9E5DF]">
+                Multilingual AI Healthcare
+              </span>
             </div>
           </div>
         </section>
 
-        {/* 04 — SYSTEM ARCHITECTURE */}
+        {/* THE CHALLENGE */}
+        <section className="p-6 sm:p-8 rounded-[14px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+            The Challenge
+          </h2>
+          <p className="text-sm sm:text-base text-[#9EA298] leading-relaxed max-w-[820px]">
+            Medical information is often difficult for everyday users to understand, especially when reports are written in technical English. MediCare was designed to make symptom screening, chest X-ray analysis and lab report interpretation more accessible while supporting both English and Urdu interaction.
+          </p>
+          <div className="pt-3 border-t border-[#8E9B4D]/15 flex items-center gap-2 text-xs text-[#9EA298]">
+            <span className="text-[#8E9B4D] font-mono">ⓘ</span>
+            <span>
+              MediCare is an AI-assisted screening project and is not intended to replace professional medical diagnosis.
+            </span>
+          </div>
+        </section>
+
+        {/* THE SOLUTION */}
         <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">04 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              SYSTEM ARCHITECTURE
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+              The Solution
+            </h2>
+            <p className="text-sm text-[#9EA298]">
+              MediCare brings multiple AI-powered health tools into one mobile experience.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Card 1 */}
+            <div className="p-6 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 hover:border-[#8E9B4D]/45 transition-colors space-y-3">
+              <div className="w-9 h-9 rounded-[6px] bg-[#142012] border border-[#8E9B4D]/30 flex items-center justify-center text-[#8E9B4D] font-bold">
+                🩺
+              </div>
+              <h3 className="text-lg font-bold text-[#E9E5DF]">Symptom Checker</h3>
+              <p className="text-xs text-[#9EA298] leading-relaxed">
+                AI-assisted symptom screening with voice input and follow-up severity questions.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="p-6 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 hover:border-[#8E9B4D]/45 transition-colors space-y-3">
+              <div className="w-9 h-9 rounded-[6px] bg-[#142012] border border-[#8E9B4D]/30 flex items-center justify-center text-[#8E9B4D] font-bold">
+                🩻
+              </div>
+              <h3 className="text-lg font-bold text-[#E9E5DF]">X-Ray Analysis</h3>
+              <p className="text-xs text-[#9EA298] leading-relaxed">
+                CNN-based chest X-ray screening for Normal and Pneumonia classifications.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="p-6 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 hover:border-[#8E9B4D]/45 transition-colors space-y-3">
+              <div className="w-9 h-9 rounded-[6px] bg-[#142012] border border-[#8E9B4D]/30 flex items-center justify-center text-[#8E9B4D] font-bold">
+                📄
+              </div>
+              <h3 className="text-lg font-bold text-[#E9E5DF]">Lab Report Reader</h3>
+              <p className="text-xs text-[#9EA298] leading-relaxed">
+                OCR-based extraction and interpretation of supported medical test values.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* REAL PRODUCT EXPERIENCE */}
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+              Inside MediCare
+            </h2>
+            <p className="text-sm text-[#9EA298]">
+              Key application screens designed for clean navigation and patient accessibility.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/25 flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12">
+            <PhoneFrame
+              src="/app-images/Dashboard.jpeg"
+              alt="MediCare Dashboard Screen"
+              caption="Dashboard — Access AI health tools, history and emergency actions from one place."
+              onImageClick={handleImageClick}
+            />
+            <PhoneFrame
+              src="/app-images/profile.jpeg"
+              alt="MediCare User Profile Screen"
+              caption="Profile — Manage user information, language preferences and account settings."
+              onImageClick={handleImageClick}
+            />
+          </div>
+        </section>
+
+        {/* SMARTER SYMPTOM SCREENING */}
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+              Smarter Symptom Screening
+            </h2>
+            <p className="text-sm text-[#9EA298] max-w-[720px] leading-relaxed">
+              Users can provide symptoms manually or through voice. Follow-up questions capture severity before the ML model generates ranked predictions and supporting guidance.
+            </p>
+          </div>
+
+          {/* Visual Sequence Grid */}
+          <div className="p-6 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
+              <PhoneFrame
+                src="/app-images/symtom-checker.jpeg"
+                alt="Symptom Checker Landing"
+                caption="1. Enter Profile Data"
+                onImageClick={handleImageClick}
+              />
+              <PhoneFrame
+                src="/app-images/symtoms.jpeg"
+                alt="Select or Speak Symptoms"
+                caption="2. Select or Speak Symptoms"
+                onImageClick={handleImageClick}
+              />
+              <PhoneFrame
+                src="/app-images/symtom-mcq.jpeg"
+                alt="Follow-up MCQ Severity Questions"
+                caption="3. Answer Severity Questions"
+                onImageClick={handleImageClick}
+              />
+              <PhoneFrame
+                src="/app-images/symtom-result.jpeg"
+                alt="Ranked AI Symptom Predictions"
+                caption="4. View AI Predictions"
+                onImageClick={handleImageClick}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* AI CHEST X-RAY ANALYSIS */}
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+              AI Chest X-Ray Analysis
             </h2>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E9E5DF] tracking-tight">
-            Connected Mobile, Cloud &amp; AI Stack
-          </h3>
-
-          {/* HTML/CSS Connected Architecture Blocks */}
-          <div className="p-6 sm:p-8 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/30 space-y-6">
+          <div className="p-6 sm:p-8 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/25 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
-            {/* Layer 1: Mobile App */}
-            <div className="space-y-2">
-              <span className="font-mono text-xs text-[#8E9B4D] uppercase font-bold tracking-wider block">
-                01. FLUTTER MOBILE APP LAYER
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {['Symptom Checker', 'X-Ray Analysis', 'Lab Report Reader', 'History & Profile'].map((mod) => (
-                  <div key={mod} className="p-3 rounded bg-[#141F12] border border-[#8E9B4D]/30 text-center font-mono text-xs text-[#E9E5DF]">
-                    {mod}
-                  </div>
-                ))}
-              </div>
+            {/* Left: Prominent X-Ray Result Phone Frame */}
+            <div className="md:col-span-5 flex justify-center">
+              <PhoneFrame
+                src="/app-images/x-ray result.jpeg"
+                alt="Chest X-Ray Analysis Result Screen"
+                caption="Chest X-Ray Classification Result"
+                onImageClick={handleImageClick}
+              />
             </div>
 
-            <div className="flex justify-center text-[#8E9B4D] font-mono text-xs">↓ REST API / HTTPS</div>
+            {/* Right: Technical Explanation & Compact Specs */}
+            <div className="md:col-span-7 space-y-5">
+              <p className="text-sm sm:text-base text-[#9EA298] leading-relaxed">
+                A TensorFlow/Keras CNN analyzes uploaded chest X-rays and classifies them as Normal or Pneumonia with a confidence score.
+              </p>
 
-            {/* Layer 2: Service Layer */}
-            <div className="space-y-2">
-              <span className="font-mono text-xs text-[#8E9B4D] uppercase font-bold tracking-wider block">
-                02. SERVICE &amp; DATA LAYER
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {['Auth Service', 'Voice Service', 'Medical Data Service', 'Database Helper'].map((mod) => (
-                  <div key={mod} className="p-3 rounded bg-[#141F12] border border-[#8E9B4D]/30 text-center font-mono text-xs text-[#E9E5DF]">
-                    {mod}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-center text-[#8E9B4D] font-mono text-xs">↓ BACKEND ORCHESTRATION</div>
-
-            {/* Layer 3: Backend & Cloud */}
-            <div className="space-y-2">
-              <span className="font-mono text-xs text-[#8E9B4D] uppercase font-bold tracking-wider block">
-                03. BACKEND &amp; CLOUD INFRASTRUCTURE
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {['FastAPI AI Server', 'Firebase Auth', 'Supabase Cloud', 'SQLite Local'].map((mod) => (
-                  <div key={mod} className="p-3 rounded bg-[#141F12] border border-[#8E9B4D]/30 text-center font-mono text-xs text-[#E9E5DF]">
-                    {mod}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-center text-[#8E9B4D] font-mono text-xs">↓ AI MODEL INFERENCE</div>
-
-            {/* Layer 4: AI Layer */}
-            <div className="space-y-2">
-              <span className="font-mono text-xs text-[#8E9B4D] uppercase font-bold tracking-wider block">
-                04. SPECIALIZED AI &amp; GENAI LAYER
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                {['Symptom Prediction ML', 'Pneumonia CNN', 'EasyOCR Engine', 'Groq Whisper', 'LLaMA 3.3 70B'].map((mod) => (
-                  <div key={mod} className="p-3 rounded bg-[#192717] border border-[#8E9B4D]/40 text-center font-mono text-xs text-[#8E9B4D] font-bold">
-                    {mod}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* 05 — AI SYSTEMS */}
-        <section className="space-y-8">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">05 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              TECHNICAL SPECIFICATIONS OF AI PIPELINES
-            </h2>
-          </div>
-
-          <div className="space-y-6">
-
-            {/* System A */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
-              <h4 className="text-xl font-bold text-[#E9E5DF] flex items-center justify-between">
-                <span>A. SYMPTOM PREDICTION MODEL</span>
-                <span className="font-mono text-xs text-[#8E9B4D]">34 FEATURES</span>
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-[#9EA298]">
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Feature Input:</strong>
-                  34 weighted symptom features gathered via GUI or voice input.
+              {/* Compact Technical Badges */}
+              <div className="grid grid-cols-3 gap-3 pt-2">
+                <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-center">
+                  <span className="font-mono text-[10px] text-[#8E9B4D] uppercase block">MODEL</span>
+                  <span className="text-xs font-semibold text-[#E9E5DF]">Keras CNN</span>
                 </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Severity Weighting:</strong>
-                  Dynamic MCQ follow-up questions to assess symptom intensity.
+                <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-center">
+                  <span className="font-mono text-[10px] text-[#8E9B4D] uppercase block">INPUT</span>
+                  <span className="text-xs font-semibold text-[#E9E5DF]">150 × 150 RGB</span>
                 </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Model Classifier:</strong>
-                  Serialized scikit-learn model (Random Forest / SVM pipeline).
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Output Ranking:</strong>
-                  Top-5 disease predictions ranked by relative probability score.
-                </div>
-              </div>
-            </div>
-
-            {/* System B */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
-              <h4 className="text-xl font-bold text-[#E9E5DF] flex items-center justify-between">
-                <span>B. PNEUMONIA DETECTION CNN</span>
-                <span className="font-mono text-xs text-[#8E9B4D]">5,863 SCANS</span>
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-[#9EA298]">
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Framework:</strong>
-                  TensorFlow / Keras CNN architecture.
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Dataset:</strong>
-                  Kaggle Chest X-Ray Images (Pneumonia) dataset of 5,863 scans.
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Pre-processing:</strong>
-                  150 × 150 RGB image normalization (scaled 0–1).
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Classification:</strong>
-                  Binary Sigmoidal Probability Output (NORMAL vs PNEUMONIA).
-                </div>
-              </div>
-            </div>
-
-            {/* System C */}
-            <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
-              <h4 className="text-xl font-bold text-[#E9E5DF] flex items-center justify-between">
-                <span>C. LAB REPORT OCR &amp; ALIAS MATCHING</span>
-                <span className="font-mono text-xs text-[#8E9B4D]">25+ TEST TYPES</span>
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-[#9EA298]">
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">OCR Engine:</strong>
-                  EasyOCR with 2× upscale image pre-processing and grayscale conversion.
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Alias Mapping:</strong>
-                  Robust regex &amp; string alias matching across 25+ common lab tests.
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Categories:</strong>
-                  CBC, Diabetes, Liver, Kidney, Lipid Panel, Vitamins, Thyroid.
-                </div>
-                <div>
-                  <strong className="text-[#E9E5DF] block font-mono mb-1">Range Evaluation:</strong>
-                  Automatic classification into Normal, Low, or High values.
+                <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-center">
+                  <span className="font-mono text-[10px] text-[#8E9B4D] uppercase block">CLASSES</span>
+                  <span className="text-xs font-semibold text-[#E9E5DF]">Normal / Pneumonia</span>
                 </div>
               </div>
             </div>
@@ -445,281 +389,223 @@ export default function MedicareCaseStudy() {
           </div>
         </section>
 
-        {/* 06 — SYMPTOM CHECKER WORKFLOW */}
+        {/* LAB REPORT READER */}
         <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">06 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              SYMPTOM CHECKER WORKFLOW
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+              From Lab Report to Clear Results
             </h2>
+            <p className="text-sm text-[#9EA298] max-w-[720px]">
+              EasyOCR extracts text from uploaded reports, identifies supported medical tests and presents values with Normal, Low or High status.
+            </p>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E9E5DF] tracking-tight">
-            11-Step End-to-End Processing Workflow
-          </h3>
+          <div className="p-6 sm:p-8 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/25 flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-12">
+            
+            {/* Step 1: Uploaded Report */}
+            <div className="flex flex-col items-center">
+              <PhoneFrame
+                src="/app-images/report.jpeg"
+                alt="Uploaded Lab Report Document"
+                caption="1. Uploaded Lab Report"
+                onImageClick={handleImageClick}
+              />
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Connector Badge */}
+            <div className="flex flex-col items-center justify-center p-3 rounded-full bg-[#142012] border border-[#8E9B4D]/30 text-[#8E9B4D] font-mono text-xs font-bold my-auto">
+              <span>EasyOCR + Matching →</span>
+            </div>
+
+            {/* Step 2: Interpreted Result */}
+            <div className="flex flex-col items-center">
+              <PhoneFrame
+                src="/app-images/Lab-result.jpeg"
+                alt="Interpreted Lab Values Result Screen"
+                caption="2. Interpreted Result & Status"
+                onImageClick={handleImageClick}
+              />
+            </div>
+
+          </div>
+        </section>
+
+        {/* MULTILINGUAL VOICE AI */}
+        <section className="p-6 sm:p-8 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/30 space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+            Built for English &amp; Urdu
+          </h2>
+          <p className="text-sm sm:text-base text-[#9EA298] leading-relaxed max-w-[800px]">
+            Users can speak symptoms in English, Urdu or Roman Urdu. Groq Whisper handles speech transcription while LLaMA supports symptom understanding, translation and Urdu result generation.
+          </p>
+
+          {/* Clean Horizontal Voice Flow */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center pt-2">
             {[
-              'User provides basic profile information',
-              'Symptoms entered manually or by voice',
-              'Voice input transcribed with Groq Whisper',
-              'LLaMA maps natural-language input to symptoms',
-              'Follow-up MCQs assess symptom severity',
-              '34-element weighted vector generated',
-              'FastAPI sends vector to ML model',
-              'Top-5 predictions generated with probabilities',
-              'Descriptions and precautions attached to result',
-              'Results saved to cloud + local device history',
-              'Optional Urdu translation and text-to-speech output',
-            ].map((step, idx) => (
-              <div key={idx} className="p-4 rounded-[6px] bg-[#0E150D] border border-[#8E9B4D]/20 flex items-start gap-3">
-                <span className="font-mono text-xs font-bold text-[#8E9B4D] px-2 py-0.5 rounded bg-[#8E9B4D]/10">
-                  {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
-                </span>
-                <span className="text-xs text-[#E9E5DF] leading-relaxed">{step}</span>
+              { step: '01', title: 'Speak', desc: 'Voice input in English/Urdu' },
+              { step: '02', title: 'Transcribe', desc: 'Groq Whisper STT' },
+              { step: '03', title: 'Understand', desc: 'LLaMA symptom mapping' },
+              { step: '04', title: 'Result', desc: 'ML Disease Inference' },
+              { step: '05', title: 'Urdu Voice', desc: 'Spoken Urdu TTS output' },
+            ].map((item) => (
+              <div key={item.step} className="p-3.5 rounded-[8px] bg-[#121B10] border border-[#8E9B4D]/20 space-y-1">
+                <span className="font-mono text-[10px] text-[#8E9B4D] font-bold block">{item.step}</span>
+                <span className="text-xs font-bold text-[#E9E5DF] block">{item.title}</span>
+                <span className="text-[10px] text-[#9EA298] block">{item.desc}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 07 — HYBRID DATA ARCHITECTURE & AUTH */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Hybrid Data */}
-          <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">07 //</span>
-              <h3 className="text-lg font-bold text-[#E9E5DF]">HYBRID DATA ARCHITECTURE</h3>
+        {/* TECHNOLOGY SECTION */}
+        <section className="space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+            Technology Behind MediCare
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Group 1 */}
+            <div className="p-5 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-2">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase font-bold tracking-wider block">
+                MOBILE
+              </span>
+              <ul className="space-y-1 text-xs text-[#E9E5DF] font-mono">
+                <li>Flutter</li>
+                <li>Dart</li>
+              </ul>
             </div>
-            <p className="text-xs text-[#9EA298] leading-relaxed">
-              MediCare employs a hybrid storage strategy to guarantee offline availability while keeping cloud user profiles synchronized across devices.
-            </p>
-            <div className="space-y-3 pt-2">
-              <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs">
-                <strong className="text-[#8E9B4D] block font-mono mb-1">SUPABASE / POSTGRESQL (CLOUD)</strong>
-                Cloud storage for user profiles, symptom history logs, X-ray classification records, and lab report history.
-              </div>
-              <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs">
-                <strong className="text-[#8E9B4D] block font-mono mb-1">SQLITE (ON-DEVICE LOCAL)</strong>
-                On-device storage for offline access, immediate user caching, and localized history when offline.
-              </div>
+
+            {/* Group 2 */}
+            <div className="p-5 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-2">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase font-bold tracking-wider block">
+                AI &amp; ML
+              </span>
+              <ul className="space-y-1 text-xs text-[#E9E5DF] font-mono">
+                <li>TensorFlow</li>
+                <li>scikit-learn</li>
+                <li>EasyOCR</li>
+              </ul>
+            </div>
+
+            {/* Group 3 */}
+            <div className="p-5 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-2">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase font-bold tracking-wider block">
+                BACKEND &amp; AI
+              </span>
+              <ul className="space-y-1 text-xs text-[#E9E5DF] font-mono">
+                <li>Python / FastAPI</li>
+                <li>Groq Whisper</li>
+                <li>LLaMA 3.3 70B</li>
+              </ul>
+            </div>
+
+            {/* Group 4 */}
+            <div className="p-5 rounded-[12px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-2">
+              <span className="font-mono text-[10px] text-[#8E9B4D] uppercase font-bold tracking-wider block">
+                DATA &amp; AUTHENTICATION
+              </span>
+              <ul className="space-y-1 text-xs text-[#E9E5DF] font-mono">
+                <li>Supabase / PostgreSQL</li>
+                <li>SQLite (On-device)</li>
+                <li>Firebase Auth</li>
+              </ul>
             </div>
           </div>
-
-          {/* Authentication & Cloud */}
-          <div className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">08 //</span>
-              <h3 className="text-lg font-bold text-[#E9E5DF]">AUTHENTICATION &amp; CLOUD SECURITY</h3>
-            </div>
-            <p className="text-xs text-[#9EA298] leading-relaxed">
-              Secure authentication guarantees user data privacy and session integrity without exposing sensitive backend infrastructure.
-            </p>
-            <div className="space-y-3 pt-2">
-              <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs">
-                <strong className="text-[#8E9B4D] block font-mono mb-1">FIREBASE AUTHENTICATION</strong>
-                Phone OTP authentication for secure user registration and friction-free login sessions.
-              </div>
-              <div className="p-3 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs">
-                <strong className="text-[#8E9B4D] block font-mono mb-1">REST API SECURITY</strong>
-                FastAPI endpoints require validated authorization headers and sanitized payload inputs.
-              </div>
-            </div>
-          </div>
-
         </section>
 
-        {/* 09 — TECHNOLOGY STACK */}
-        <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">09 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              TECHNOLOGY STACK
-            </h2>
+        {/* SIMPLE ARCHITECTURE */}
+        <section className="p-6 rounded-[14px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-4">
+          <h2 className="text-xl font-bold text-[#E9E5DF]">
+            Architecture Overview
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center">
+            <div className="p-3.5 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs font-mono text-[#E9E5DF]">
+              Flutter Mobile App
+            </div>
+            <div className="p-3.5 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs font-mono text-[#8E9B4D] font-bold">
+              FastAPI Server
+            </div>
+            <div className="p-3.5 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs font-mono text-[#E9E5DF]">
+              AI Models (ML / CNN / OCR / LLM)
+            </div>
+            <div className="p-3.5 rounded bg-[#121B10] border border-[#8E9B4D]/20 text-xs font-mono text-[#E9E5DF]">
+              Supabase / SQLite
+            </div>
           </div>
+        </section>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {/* PROJECT OUTCOME */}
+        <section className="p-8 rounded-[16px] bg-[#0E150D] border border-[#8E9B4D]/30 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF] tracking-tight">
+            What This Project Demonstrates
+          </h2>
+          <p className="text-sm sm:text-base text-[#9EA298] leading-relaxed max-w-[860px]">
+            MediCare demonstrates how multiple AI technologies can work together inside one practical mobile product — combining machine learning, computer vision, OCR, speech AI, multilingual LLM capabilities, backend APIs and cloud/local data storage.
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-2">
             {[
-              { category: 'MOBILE', tech: ['Flutter', 'Dart', 'Provider'] },
-              { category: 'BACKEND', tech: ['Python', 'FastAPI', 'Uvicorn'] },
-              { category: 'AI / ML', tech: ['TensorFlow', 'Keras', 'scikit-learn', 'EasyOCR'] },
-              { category: 'GENERATIVE AI', tech: ['Groq Whisper v3', 'LLaMA 3.3 70B'] },
-              { category: 'DATABASE', tech: ['Supabase', 'PostgreSQL', 'SQLite'] },
-              { category: 'AUTH', tech: ['Firebase Auth'] },
-            ].map((group) => (
-              <div key={group.category} className="p-4 rounded-[8px] bg-[#0E150D] border border-[#8E9B4D]/20 space-y-2">
-                <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider font-bold block">
-                  {group.category}
-                </span>
-                <ul className="space-y-1 text-xs text-[#E9E5DF]">
-                  {group.tech.map((t) => (
-                    <li key={t} className="font-mono">{t}</li>
-                  ))}
-                </ul>
-              </div>
+              'Machine Learning',
+              'Computer Vision',
+              'OCR',
+              'Voice AI',
+              'LLMs',
+              'Mobile Development',
+              'Backend APIs',
+            ].map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 rounded-full bg-[#142012] border border-[#8E9B4D]/30 font-mono text-xs text-[#8E9B4D]"
+              >
+                {tag}
+              </span>
             ))}
           </div>
         </section>
 
-        {/* 10 — KEY ENGINEERING CHALLENGES & SOLUTIONS */}
-        <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-[#8E9B4D] font-bold">10 //</span>
-            <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-              KEY ENGINEERING CHALLENGES
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                challenge: 'Multilingual Medical Input',
-                detail: 'Users present symptoms in English, Urdu script, or Roman Urdu.',
-                approach: 'Implemented Groq Whisper for speech transcription coupled with LLaMA 3.3 for medical intent extraction and Urdu translation.',
-              },
-              {
-                challenge: 'Hybrid Connectivity',
-                detail: 'Mobile health tools must function reliably even in low-bandwidth regions.',
-                approach: 'Combined cloud-synced Supabase backend with local SQLite caching for seamless offline diagnostic history access.',
-              },
-              {
-                challenge: 'Multiple AI Pipelines',
-                detail: 'Symptom scoring, X-ray classification, and OCR are fundamentally different workloads.',
-                approach: 'Architected a modular FastAPI server exposing dedicated asynchronous endpoints for each specialized AI pipeline.',
-              },
-              {
-                challenge: 'Medical Report Variability',
-                detail: 'Different diagnostic labs use varying terminology and formatting for lab values.',
-                approach: 'Developed alias-based OCR fuzzy string matching and numeric look-ahead parsers across 25+ common test categories.',
-              },
-            ].map((item, idx) => (
-              <div key={idx} className="p-6 rounded-[10px] bg-[#0E150D] border border-[#8E9B4D]/25 space-y-3">
-                <span className="font-mono text-xs text-[#8E9B4D] font-bold block uppercase">
-                  CHALLENGE 0{idx + 1}: {item.challenge}
-                </span>
-                <p className="text-xs text-[#9EA298]"><strong className="text-[#E9E5DF]">Problem:</strong> {item.detail}</p>
-                <p className="text-xs text-[#9EA298]"><strong className="text-[#8E9B4D]">Engineering Approach:</strong> {item.approach}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 11 & 12 — INNOVATIONS & API ENDPOINTS */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Innovations */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">11 //</span>
-              <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-                KEY INNOVATIONS
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                'Multilingual Voice Pipeline',
-                'Hybrid Online/Offline Storage',
-                'Unified AI Backend Server',
-                'MCQ Severity Weighting',
-                'Urdu Medical NLP Engine',
-                'Lab Report Alias Matching',
-              ].map((inv) => (
-                <div key={inv} className="p-3 rounded bg-[#0E150D] border border-[#8E9B4D]/20 text-xs font-mono text-[#E9E5DF]">
-                  • {inv}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* API Endpoints */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">12 //</span>
-              <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-                API ARCHITECTURE
-              </h2>
-            </div>
-            <div className="space-y-3">
-              <div className="p-3 rounded bg-[#0E150D] border border-[#8E9B4D]/20 font-mono text-xs space-y-1">
-                <span className="text-[#8E9B4D] font-bold">POST /predict</span>
-                <span className="text-[#9EA298] block">Input: 34-element feature vector → Output: Top-5 predictions + confidence</span>
-              </div>
-              <div className="p-3 rounded bg-[#0E150D] border border-[#8E9B4D]/20 font-mono text-xs space-y-1">
-                <span className="text-[#8E9B4D] font-bold">POST /predict-xray</span>
-                <span className="text-[#9EA298] block">Input: Chest X-ray image → Output: NORMAL / PNEUMONIA + probability</span>
-              </div>
-              <div className="p-3 rounded bg-[#0E150D] border border-[#8E9B4D]/20 font-mono text-xs space-y-1">
-                <span className="text-[#8E9B4D] font-bold">POST /interpret-report</span>
-                <span className="text-[#9EA298] block">Input: Lab report image → Output: Extracted test values &amp; range analysis</span>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        {/* 13 & 14 — PRODUCT FEATURES & OUTCOME */}
-        <section className="space-y-8">
-          
-          {/* Features */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">13 //</span>
-              <h2 className="text-xs font-mono text-[#8E9B4D] uppercase tracking-[0.2em] font-semibold">
-                ADDITIONAL PRODUCT FEATURES
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-2 text-xs font-mono text-[#9EA298]">
-              {[
-                'Phone OTP Authentication',
-                'Personalized Dashboard',
-                'Emergency Dialer',
-                'Health Tips Feed',
-                'English / Urdu Language Toggle',
-                'Activity & Diagnosis History',
-                'Profile Management',
-                'Offline Login Support',
-                'Text-to-Speech Output',
-              ].map((feat) => (
-                <span key={feat} className="px-3 py-1.5 rounded bg-[#0E150D] border border-[#8E9B4D]/20 text-[#E9E5DF]">
-                  ✓ {feat}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Project Outcome */}
-          <div className="p-8 rounded-[12px] bg-[#121B10] border border-[#8E9B4D]/35 space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-[#8E9B4D] font-bold">14 //</span>
-              <span className="font-mono text-xs text-[#8E9B4D] uppercase font-bold tracking-wider">PROJECT OUTCOME</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-[#E9E5DF]">
-              One Mobile Experience. Multiple AI Systems.
-            </h3>
-            <p className="text-sm text-[#9EA298] leading-relaxed max-w-[860px]">
-              MediCare successfully demonstrates full-stack integration across mobile application engineering, machine learning inference, computer vision, optical character recognition (OCR), large language models (LLMs), speech processing, REST APIs, authentication, and hybrid data storage.
-            </p>
-          </div>
-
-        </section>
-
-        {/* FOOTER NAVIGATION */}
+        {/* FINAL CTA */}
         <section className="pt-8 border-t border-[#8E9B4D]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="text-xl font-bold text-[#E9E5DF]">
+              Explore More Projects
+            </h3>
+          </div>
+
           <a
             href="/#projects"
             onClick={handleBackToProjects}
-            className="inline-flex items-center gap-2 text-xs font-mono text-[#8E9B4D] hover:text-[#A7B45C] transition-colors group cursor-pointer"
+            className="inline-flex items-center gap-2 text-xs font-mono text-[#070C08] font-bold bg-[#8E9B4D] hover:bg-[#a6b256] px-5 py-2.5 rounded-[4px] transition-colors cursor-pointer"
           >
-            <span className="transition-transform group-hover:-translate-x-1">←</span>
-            <span>BACK TO PROJECTS</span>
+            <span>← Back to Projects</span>
           </a>
-
-          <span className="font-mono text-xs text-[#9EA298]">
-            ABDUL MANAN // AI ENGINEER PORTFOLIO
-          </span>
         </section>
 
       </main>
+
+      {/* FULLSCREEN LIGHTBOX MODAL FOR SCREENSHOTS */}
+      {activeImage && (
+        <div
+          onClick={() => setActiveImage(null)}
+          className="fixed inset-0 z-50 bg-[#070C08]/95 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6"
+        >
+          <div className="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center">
+            <button
+              onClick={() => setActiveImage(null)}
+              className="absolute -top-10 right-0 text-[#E9E5DF] hover:text-[#8E9B4D] font-mono text-sm flex items-center gap-1 cursor-pointer bg-[#0E150D] px-3 py-1 rounded border border-[#8E9B4D]/30"
+            >
+              <span>✕ Close</span>
+            </button>
+            <img
+              src={activeImage.src}
+              alt={activeImage.alt}
+              className="max-w-full max-h-[80vh] object-contain rounded-[16px] border border-[#8E9B4D]/40 shadow-2xl"
+            />
+            <p className="mt-3 text-xs font-mono text-[#9EA298] text-center">
+              {activeImage.alt}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
