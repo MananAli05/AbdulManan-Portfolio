@@ -119,7 +119,7 @@ export default function About() {
                 <img
                   src="/manan.png"
                   alt="Abdul Manan - AI Engineer"
-                  className="w-full h-full object-cover rounded-[2px] grayscale contrast-[1.08] brightness-95 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-[1.03]"
+                  className="w-full h-full object-cover rounded-[2px] grayscale contrast-[1.08] brightness-95 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-[1.03] about-profile-img"
                   loading="lazy"
                 />
               </div>

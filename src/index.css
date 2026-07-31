@@ -131,3 +131,11 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Touch device profile image: Full natural color by default without hover */
+@media (hover: none), (pointer: coarse) {
+  .about-profile-img {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+}

@@ -15,7 +15,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[calc(100vh-76px)] md:min-h-[calc(100svh-80px)] w-full text-[#F3F3EE] flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 pt-24 md:pt-28 pb-10 bg-[#070C08] isolate"
+      className="relative min-h-[calc(100vh-76px)] md:min-h-[calc(100svh-80px)] w-full text-[#F3F3EE] flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 pt-24 md:pt-28 pb-14 sm:pb-16 lg:pb-10 bg-[#070C08] isolate"
     >
       {/* Dark Forest Green Ambient Radial Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_35%,#10190D_0%,#0B130B_55%,#070C08_100%)] pointer-events-none z-0" />
@@ -118,7 +118,7 @@ export default function Hero() {
       </div>
 
       {/* MINIMAL MOUSE SCROLL INDICATOR */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
+      <div className="absolute bottom-1 sm:bottom-1.5 lg:bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
         <div className="w-[18px] h-[26px] rounded-full border-[1.5px] border-[#8E9B4D]/45 flex justify-center pt-1 bg-[#080A08]/40 backdrop-blur-sm">
           <div className="w-1 h-1.5 bg-[#8E9B4D] rounded-full animate-bounce" />
         </div>
