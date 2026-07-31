@@ -30,9 +30,9 @@ interface ChatMessage {
 type CallStatus = 'READY' | 'CONNECTING' | 'LISTENING' | 'MANAN AI SPEAKING' | 'CALL ENDED' | 'ERROR';
 
 const INITIAL_QUESTIONS = [
-  "What AI projects has Abdul built?",
-  "What is Abdul's experience?",
-  "What technologies does Abdul work with?",
+  "What AI projects has Manan built?",
+  "What is Manan's experience?",
+  "What technologies does Manan work with?",
 ];
 
 export default function FloatingAiWidget() {
