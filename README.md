@@ -130,7 +130,7 @@ The project combines machine learning, computer vision, OCR, voice interaction, 
 
 ### Frontend
 
-- React 19
+- React 19 
 - TypeScript
 - Vite
 - Lucide React
@@ -316,4 +316,4 @@ API credentials used by server-side integrations remain outside the frontend bun
 
 ## License
 
-This portfolio and its source code are maintained by Abdul Manan.
+This portfolio and its source code are maintained by Abdul Manan
