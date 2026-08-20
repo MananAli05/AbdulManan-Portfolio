@@ -11,7 +11,6 @@ A modern AI-powered personal portfolio showcasing my work across AI engineering,
 
 The portfolio goes beyond a traditional static website by including **Manan AI**, an interactive AI assistant that allows visitors to explore my professional background through text, voice notes, and real-time voice conversations.
 
----
 
 ## Preview
 
