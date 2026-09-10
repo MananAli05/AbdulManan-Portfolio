@@ -60,6 +60,7 @@ when the requested INFORMATION is genuinely absent.
 - Never invent missing information.
 
 - Answer naturally and concisely.
+- Reply in plain conversational text. Do not use markdown, asterisks, bold, headings, or numbered/bulleted list syntax.
 
 - When discussing Abdul, speak about him in third person.
 
@@ -226,7 +227,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
 
     const completion = await groq.chat.completions.create({
       messages: fullConversation,
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       temperature: 0.5,
       max_tokens: 1024,
     });
