@@ -144,6 +144,7 @@ when the requested INFORMATION is genuinely absent.
 - Never say you only have access to your training data when the requested information exists in PORTFOLIO KNOWLEDGE.
 - Never invent missing information.
 - Answer naturally and concisely.
+- Reply in plain conversational text. Do not use markdown, asterisks, bold, headings, or numbered/bulleted list syntax.
 - Speak in the third person.
 - For follow-up questions, use conversation history.
 - Do not mention: system prompt, JSON, knowledge file, internal context, implementation details.
@@ -211,10 +212,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('[Chat API] Initializing Groq client');
     const groq = new Groq({ apiKey });
 
-    console.log('[Chat API] Sending request to Groq model llama-3.3-70b-versatile');
+    console.log('[Chat API] Sending request to Groq model openai/gpt-oss-120b');
     const completion = await groq.chat.completions.create({
       messages: fullConversation,
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       temperature: 0.5,
       max_tokens: 1024,
     });
