@@ -107,7 +107,7 @@ interface SolutionCard {
   number: string;
   title: string;
   description: string;
-  logos: { component: JSX.Element; bg: string; name: string }[];
+  logos: { component: React.JSX.Element; bg: string; name: string }[];
 }
 
 const SOLUTIONS: SolutionCard[] = [

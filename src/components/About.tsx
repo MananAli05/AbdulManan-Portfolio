@@ -29,9 +29,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
-    >
-      {/* Ambient background glow */}
+      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_20%_40%,rgba(142,155,77,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-[1280px] mx-auto">

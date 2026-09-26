@@ -112,7 +112,7 @@ const GitHubOctocatIcon = () => (
 
 interface TechItem {
   name: string;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
 }
 
 interface ProjectSlide {

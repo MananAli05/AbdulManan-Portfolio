@@ -164,24 +164,17 @@ export default function AgentTerminal() {
           <div className="w-2 h-2 rounded-full bg-[#46483a]/90" />
           <div className="w-2 h-2 rounded-full bg-[#8E9B4D]/70" />
         </div>
-
-        {/* Title */}
         <span className="text-[10px] text-[#8C9386] font-mono tracking-wide">
           agent_status.log
         </span>
       </div>
-
-      {/* Terminal Body */}
       <div ref={bodyRef} className="flex-1 p-2.5 overflow-hidden flex flex-col justify-end gap-1">
-        {/* Previous Committed Lines */}
         {lines.map((lineItem, idx) => (
           <div key={idx} className="flex items-start gap-1.5 whitespace-nowrap">
             <span className="text-[#A8B45A] font-semibold">&gt;</span>
             <div className="truncate">{renderLineContent(lineItem)}</div>
           </div>
         ))}
-
-        {/* Currently Typing Line */}
         <div className="flex items-center gap-1.5 whitespace-nowrap">
           <span className="text-[#A8B45A] font-semibold">&gt;</span>
           <span className="text-[#8C9386]">{currentLineText}</span>

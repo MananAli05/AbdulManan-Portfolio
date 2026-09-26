@@ -22,7 +22,7 @@ import { Database, Sparkles, Webhook, Cloud, Bot } from 'lucide-react';
 
 interface TechCategory {
   title: string;
-  items: { name: string; icon: JSX.Element }[];
+  items: { name: string; icon: React.JSX.Element }[];
 }
 
 const TECH_CATEGORIES: TechCategory[] = [

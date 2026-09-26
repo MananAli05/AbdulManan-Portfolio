@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MessageSquare, Mic, Volume2, Sparkles } from 'lucide-react';
-
 export default function AiCommunicationVisual() {
-  // Cycle through states: 0 = Chat / Typing, 1 = Waveform / Voice, 2 = Real-time Speaking Agent
   const [activeStep, setActiveStep] = useState<number>(0);
 
   useEffect(() => {
@@ -137,8 +135,6 @@ export default function AiCommunicationVisual() {
           <span className="font-mono text-[10px] tracking-wider uppercase text-[#E9E5DF]/80">RESPOND</span>
         </div>
       </div>
-
-      {/* BOTTOM CAPABILITY LABELS */}
       <div className="mt-8 flex items-center justify-center gap-4">
         <div className="flex items-center gap-2">
           <MessageSquare className="w-4 h-4 text-[#8E9B4D]" />

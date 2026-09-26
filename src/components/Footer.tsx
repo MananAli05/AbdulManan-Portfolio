@@ -36,11 +36,7 @@ export default function Footer() {
               LET'S TALK <span className="text-lg">→</span>
             </a>
           </div>
-
-          {/* 3 CLEAN HORIZONTAL CONTACT CARDS */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-[1080px] mx-auto mb-16">
-            
-            {/* EMAIL CARD */}
             <a
               href="mailto:abdulmannan.developer@gmail.com"
               className="group flex items-center justify-between p-5 sm:p-6 rounded-[6px] bg-[#0C120D] border border-[#8E9B4D]/20 transition-all duration-300 hover:border-[#8E9B4D]/60 hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(142,155,77,0.1)]"

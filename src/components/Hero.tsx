@@ -74,13 +74,9 @@ export default function Hero() {
             </span>
           </a>
         </div>
-
-        {/* Tablet & Mobile Agent Terminal Presentation */}
         <div className="block xl:hidden mt-7 hero-fade-4">
           <AgentTerminal />
         </div>
-
-        {/* Mobile Horizontal Social Links Bar */}
         <div className="flex lg:hidden items-center justify-center gap-5 mt-6 pt-5 border-t border-[#8B9184]/20 w-full max-w-[300px]">
           <a
             href="https://github.com/MananAli05"
@@ -114,10 +110,7 @@ export default function Hero() {
             </svg>
           </a>
         </div>
-
       </div>
-
-      {/* MINIMAL MOUSE SCROLL INDICATOR */}
       <div className="absolute bottom-1 sm:bottom-1.5 lg:bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10 pointer-events-none">
         <div className="w-[18px] h-[26px] rounded-full border-[1.5px] border-[#8E9B4D]/45 flex justify-center pt-1 bg-[#080A08]/40 backdrop-blur-sm">
           <div className="w-1 h-1.5 bg-[#8E9B4D] rounded-full animate-bounce" />
