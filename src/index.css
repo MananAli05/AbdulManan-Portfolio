@@ -1,128 +1,190 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-/* LOCAL NEUE MONTREAL FONT FACE DEFINITIONS */
-@font-face {
-  font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* ============================================================
+   THEME TOKENS
+   ============================================================ */
 @theme {
-  --color-primary: #8E9B4D;
-  --color-on-primary: #080A08;
-  --color-background: #080A08;
-  --color-surface: #0B0D0B;
-  --color-on-surface: #F3F3EE;
+  /* Surfaces */
+  --color-cream: #FBFAF5;
+  --color-card: #FFFFFF;
+  --color-ink: #10130C;
 
-  --font-sans: "Neue Montreal", sans-serif;
-  --font-headline-lg: "Neue Montreal", sans-serif;
-  --font-headline-sm: "Neue Montreal", sans-serif;
-  --font-body-lg: "Neue Montreal", sans-serif;
-  --font-label-md: "JetBrains Mono", monospace;
-  --font-label-sm: "JetBrains Mono", monospace;
+  /* Accent */
+  --color-lime: #C5E063;
+  --color-deeplime: #5E7D12;
 
-  --font-mono: "JetBrains Mono", monospace;
+  /* Text */
+  --color-body: #5A5F50;
+  --color-faint: #8E9183;
+
+  /* Structure */
+  --color-line: #E9E7DE;
+  --color-alert: #E03E2D;
+
+  /* Typography */
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@layer base {
-  *, ::before, ::after {
-    font-family: "Neue Montreal", sans-serif;
-  }
+/* Shell metrics used outside Tailwind utilities */
+:root {
+  --shell-max: 1760px;
+  --shell-pad: clamp(20px, 3.3vw, 64px);
+  --radius-card: 32px;
+  --shadow-card: 0 1px 2px rgba(16, 19, 12, 0.04), 0 12px 32px -12px rgba(16, 19, 12, 0.10);
+  --shadow-card-hover: 0 2px 4px rgba(16, 19, 12, 0.05), 0 28px 56px -16px rgba(16, 19, 12, 0.16);
+}
 
-  html,
-  body,
-  input,
-  textarea,
-  select {
-    background-color: #080A08;
-    color: #F3F3EE;
-    font-family: "Neue Montreal", sans-serif;
-    scroll-behavior: smooth;
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-weight: 400;
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6, p, button, a, span, label, div {
-    font-family: "Neue Montreal", sans-serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    text-wrap: balance;
   }
 
-  .font-mono, code, pre {
-    font-family: "JetBrains Mono", monospace !important;
+  input, textarea, select, button {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
   }
 }
 
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: var(--shell-max);
+    margin-inline: auto;
+    padding-inline: var(--shell-pad);
+  }
+
+  /* Fluid section title — fills large screens, stays sane on phones */
+  .title-xl {
+    font-size: clamp(40px, 6vw, 110px);
+    line-height: 0.94;
+  }
+
+  .title-lg {
+    font-size: clamp(32px, 4.2vw, 72px);
+    line-height: 0.98;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  .card-surface {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+/* ============================================================
+   MOTION PRIMITIVES
+   ============================================================ */
 @layer utilities {
-  .glass-card {
-    background: rgba(11, 13, 11, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(142, 155, 77, 0.15);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-@keyframes heroFadeIn {
-  from {
+  /* Elements GSAP will reveal start hidden so there is no flash before
+     ScrollTrigger takes over. .motion-ready is set on <html> once the
+     animation layer has mounted; without JS everything stays visible. */
+  html.motion-ready [data-reveal] {
     opacity: 0;
-    transform: translateY(12px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  html.motion-ready [data-split] {
+    visibility: hidden;
+  }
+
+  /* GSAP SplitText masks each line with overflow:clip, which cuts the
+     descenders off tight-leading display type (g, y, p). Pad the line
+     so the mask box includes them, then pull the mask back up so the
+     leading is unchanged. */
+  .split-line {
+    padding-bottom: 0.18em;
+  }
+
+  :where(:has(> .split-line)) {
+    margin-bottom: -0.18em;
+  }
+
+  .lift {
+    transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo),
+      border-color 0.5s var(--ease-out-expo);
+  }
+
+  .lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Animated underline for large links */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1.5px;
+    background-repeat: no-repeat;
+    background-position: left 100%;
+    transition: background-size 0.5s var(--ease-out-expo);
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1.5px;
   }
 }
 
-.hero-fade-1 {
-  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-cream); }
+::-webkit-scrollbar-thumb {
+  background: #D8D5C8;
+  border-radius: 10px;
+  border: 3px solid var(--color-cream);
 }
+::-webkit-scrollbar-thumb:hover { background: var(--color-faint); }
 
-.hero-fade-2 {
-  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-  opacity: 0;
-}
-
-.hero-fade-3 {
-  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-  opacity: 0;
-}
-
-.hero-fade-4 {
-  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-  opacity: 0;
-}
-
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #080A08; }
-::-webkit-scrollbar-thumb { background: #46483a; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #8E9B4D; }
-
+/* ============================================================
+   REDUCED MOTION — show everything, move nothing
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -130,12 +192,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
 
-/* Touch device profile image: Full natural color by default without hover */
-@media (hover: none), (pointer: coarse) {
-  .about-profile-img {
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
+  html.motion-ready [data-reveal] { opacity: 1 !important; }
+  html.motion-ready [data-split] { visibility: visible !important; }
+
+  .lift:hover { transform: none; }
 }

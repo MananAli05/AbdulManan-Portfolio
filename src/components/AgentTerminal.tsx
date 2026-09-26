@@ -50,11 +50,11 @@ export default function AgentTerminal() {
     { text: 'status: online', statusKeyword: 'online' },
   ]);
   const [currentLineText, setCurrentLineText] = useState<string>('');
-  const [sequenceIndex, setSequenceIndex] = useState<number>(3);
+  const [sequenceIndex, setSequenceIndex] = useState<number>(4);
   const [charIndex, setCharIndex] = useState<number>(0);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  const MAX_VISIBLE_LINES = 5;
+  const MAX_VISIBLE_LINES = 6;
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -70,7 +70,7 @@ export default function AgentTerminal() {
     }
 
     const currentTarget = COMMAND_SEQUENCE[sequenceIndex % COMMAND_SEQUENCE.length];
-    
+
     // Typewriter effect per character
     if (charIndex < currentTarget.text.length) {
       const timer = setTimeout(() => {
@@ -84,7 +84,9 @@ export default function AgentTerminal() {
       const pauseTimer = setTimeout(() => {
         setLines((prevLines) => {
           const updated = [...prevLines, currentTarget];
-          return updated.length > MAX_VISIBLE_LINES ? updated.slice(updated.length - MAX_VISIBLE_LINES) : updated;
+          return updated.length > MAX_VISIBLE_LINES
+            ? updated.slice(updated.length - MAX_VISIBLE_LINES)
+            : updated;
         });
         setCurrentLineText('');
         setCharIndex(0);
@@ -103,13 +105,13 @@ export default function AgentTerminal() {
 
   const renderLineContent = (item: TerminalLine) => {
     const { text } = item;
-    
+
     if (text.includes('✓')) {
       const parts = text.split('✓');
       return (
         <span>
           {parts[0]}
-          <span className="text-[#B0C83D] font-semibold">✓</span>
+          <span className="text-deeplime font-semibold">✓</span>
           {parts[1]}
         </span>
       );
@@ -118,7 +120,7 @@ export default function AgentTerminal() {
     if (text.includes('status: online')) {
       return (
         <span>
-          status: <span className="text-[#B0C83D] font-semibold">online</span>
+          status: <span className="text-deeplime font-semibold">online</span>
         </span>
       );
     }
@@ -126,7 +128,7 @@ export default function AgentTerminal() {
     if (text.includes('200 OK')) {
       return (
         <span>
-          api response: <span className="text-[#B0C83D] font-semibold">200 OK</span>
+          api response: <span className="text-deeplime font-semibold">200 OK</span>
         </span>
       );
     }
@@ -134,7 +136,7 @@ export default function AgentTerminal() {
     if (text.includes('latency:')) {
       return (
         <span>
-          latency: <span className="text-[#C8A85A]">{text.replace('latency: ', '')}</span>
+          latency: <span className="text-ink font-medium">{text.replace('latency: ', '')}</span>
         </span>
       );
     }
@@ -143,7 +145,7 @@ export default function AgentTerminal() {
       return (
         <span>
           {text.replace('ready', '')}
-          <span className="text-[#B0C83D]">ready</span>
+          <span className="text-deeplime font-semibold">ready</span>
         </span>
       );
     }
@@ -153,32 +155,38 @@ export default function AgentTerminal() {
 
   return (
     <div
-      aria-label="Animated AI System Terminal Visual"
-      className="w-[235px] xl:w-[245px] h-[180px] xl:h-[190px] bg-[#0D120D] border border-[#8E9B4D]/25 rounded-xl shadow-xl hover:border-[#8E9B4D]/45 hover:shadow-[0_0_20px_rgba(142,155,77,0.12)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col overflow-hidden font-mono text-[10px] xl:text-[11px] leading-[1.5] text-[#8C9386] pointer-events-auto select-none"
+      aria-label="Animated AI system terminal visual"
+      className="w-full bg-card border border-line rounded-[28px] shadow-[0_2px_4px_rgba(16,19,12,0.04),0_24px_48px_-20px_rgba(16,19,12,0.18)] flex flex-col overflow-hidden font-mono text-[12px] leading-[1.7] text-faint select-none"
     >
-      {/* Top Header Bar (30px height) */}
-      <div className="h-[30px] px-3 bg-[#080A08]/80 border-b border-[#46483a]/25 flex items-center justify-between shrink-0">
-        {/* Three Muted Circles */}
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-[#5a483a]/80" />
-          <div className="w-2 h-2 rounded-full bg-[#46483a]/90" />
-          <div className="w-2 h-2 rounded-full bg-[#8E9B4D]/70" />
+      {/* Header bar */}
+      <div className="h-[52px] px-5 border-b border-line flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5">
+          <span className="relative flex w-2.5 h-2.5">
+            <span className="absolute inline-flex w-full h-full rounded-full bg-lime opacity-70 animate-ping" />
+            <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-lime" />
+          </span>
+          <span className="text-[11px] text-ink font-medium tracking-[0.04em]">
+            agent_status.log
+          </span>
         </div>
-        <span className="text-[10px] text-[#8C9386] font-mono tracking-wide">
-          agent_status.log
-        </span>
+        <span className="text-[10px] uppercase tracking-[0.16em] text-faint">live</span>
       </div>
-      <div ref={bodyRef} className="flex-1 p-2.5 overflow-hidden flex flex-col justify-end gap-1">
+
+      {/* Log body */}
+      <div
+        ref={bodyRef}
+        className="h-[196px] p-5 overflow-hidden flex flex-col justify-end gap-1.5"
+      >
         {lines.map((lineItem, idx) => (
-          <div key={idx} className="flex items-start gap-1.5 whitespace-nowrap">
-            <span className="text-[#A8B45A] font-semibold">&gt;</span>
+          <div key={idx} className="flex items-start gap-2 whitespace-nowrap">
+            <span className="text-lime font-semibold">&gt;</span>
             <div className="truncate">{renderLineContent(lineItem)}</div>
           </div>
         ))}
-        <div className="flex items-center gap-1.5 whitespace-nowrap">
-          <span className="text-[#A8B45A] font-semibold">&gt;</span>
-          <span className="text-[#8C9386]">{currentLineText}</span>
-          <span className="w-1.5 h-3 bg-[#B0C83D] animate-pulse inline-block ml-0.5" />
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          <span className="text-lime font-semibold">&gt;</span>
+          <span>{currentLineText}</span>
+          <span className="w-[7px] h-[14px] bg-deeplime animate-pulse inline-block ml-0.5" />
         </div>
       </div>
     </div>

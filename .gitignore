@@ -10,3 +10,6 @@ coverage/
 .env*
 !.env.example
 
+
+# local design reference (81MB)
+public/referencevideo.mp4

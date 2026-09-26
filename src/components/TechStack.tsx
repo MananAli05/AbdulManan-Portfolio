@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import {
   SiPython,
   SiTensorflow,
@@ -19,164 +18,122 @@ import {
   SiDocker,
 } from 'react-icons/si';
 import { Database, Sparkles, Webhook, Cloud, Bot } from 'lucide-react';
+import SplitHeading from './motion/SplitHeading';
+import Reveal from './motion/Reveal';
 
 interface TechCategory {
   title: string;
   items: { name: string; icon: React.JSX.Element }[];
 }
 
+const ICON = 'w-[22px] h-[22px]';
+
 const TECH_CATEGORIES: TechCategory[] = [
   {
     title: 'AI / ML',
     items: [
-      { name: 'Python', icon: <SiPython color="#3776AB" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'TensorFlow', icon: <SiTensorflow color="#FF6F00" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'PyTorch', icon: <SiPytorch color="#EE4C2C" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Scikit-learn', icon: <SiScikitlearn color="#F7931E" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'OpenCV', icon: <SiOpencv color="#5C3EE8" className="w-7 h-7 sm:w-8 sm:h-8" /> },
+      { name: 'Python', icon: <SiPython color="#3776AB" className={ICON} /> },
+      { name: 'TensorFlow', icon: <SiTensorflow color="#FF6F00" className={ICON} /> },
+      { name: 'PyTorch', icon: <SiPytorch color="#EE4C2C" className={ICON} /> },
+      { name: 'Scikit-learn', icon: <SiScikitlearn color="#F7931E" className={ICON} /> },
+      { name: 'OpenCV', icon: <SiOpencv color="#5C3EE8" className={ICON} /> },
     ],
   },
   {
     title: 'LLM / AI',
     items: [
-      { name: 'OpenAI', icon: <Bot className="w-6 h-6 sm:w-7 sm:h-7 text-[#10A37F]" /> },
-      { name: 'LangChain', icon: <SiLangchain color="#38BDF8" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Hugging Face', icon: <SiHuggingface color="#FFD21E" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'RAG', icon: <Database className="w-6 h-6 sm:w-7 sm:h-7 text-[#8E9B4D]" /> },
-      { name: 'LLMs', icon: <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-[#8E9B4D]" /> },
+      { name: 'OpenAI', icon: <Bot className={`${ICON} text-[#10A37F]`} /> },
+      { name: 'LangChain', icon: <SiLangchain color="#1C7A6E" className={ICON} /> },
+      { name: 'Hugging Face', icon: <SiHuggingface color="#E9A100" className={ICON} /> },
+      { name: 'RAG', icon: <Database className={`${ICON} text-deeplime`} /> },
+      { name: 'LLMs', icon: <Sparkles className={`${ICON} text-deeplime`} /> },
     ],
   },
   {
-    title: 'BACKEND',
+    title: 'Backend',
     items: [
-      { name: 'FastAPI', icon: <SiFastapi color="#009688" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Django', icon: <SiDjango color="#44B78B" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'REST API', icon: <Webhook className="w-6 h-6 sm:w-7 sm:h-7 text-[#8E9B4D]" /> },
+      { name: 'FastAPI', icon: <SiFastapi color="#009688" className={ICON} /> },
+      { name: 'Django', icon: <SiDjango color="#0C4B33" className={ICON} /> },
+      { name: 'REST API', icon: <Webhook className={`${ICON} text-deeplime`} /> },
     ],
   },
   {
-    title: 'DATA',
+    title: 'Data',
     items: [
-      { name: 'PostgreSQL', icon: <SiPostgresql color="#4169E1" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Supabase', icon: <SiSupabase color="#3ECF8E" className="w-7 h-7 sm:w-8 sm:h-8" /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql color="#4169E1" className={ICON} /> },
+      { name: 'Supabase', icon: <SiSupabase color="#1F9E6E" className={ICON} /> },
     ],
   },
   {
-    title: 'FRONTEND',
+    title: 'Frontend',
     items: [
-      { name: 'React', icon: <SiReact color="#61DAFB" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Tailwind CSS', icon: <SiTailwindcss color="#06B6D4" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'JavaScript', icon: <SiJavascript color="#F7DF1E" className="w-7 h-7 sm:w-8 sm:h-8" /> },
+      { name: 'React', icon: <SiReact color="#0E93B0" className={ICON} /> },
+      { name: 'Tailwind CSS', icon: <SiTailwindcss color="#06B6D4" className={ICON} /> },
+      { name: 'JavaScript', icon: <SiJavascript color="#C5A200" className={ICON} /> },
     ],
   },
   {
-    title: 'DEV TOOLS',
+    title: 'Dev tools',
     items: [
-      { name: 'Git', icon: <SiGit color="#F05032" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'GitHub', icon: <SiGithub color="#FFFFFF" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Docker', icon: <SiDocker color="#2496ED" className="w-7 h-7 sm:w-8 sm:h-8" /> },
-      { name: 'Cloud', icon: <Cloud className="w-6 h-6 sm:w-7 sm:h-7 text-[#8E9B4D]" /> },
+      { name: 'Git', icon: <SiGit color="#F05032" className={ICON} /> },
+      { name: 'GitHub', icon: <SiGithub color="#10130C" className={ICON} /> },
+      { name: 'Docker', icon: <SiDocker color="#2496ED" className={ICON} /> },
+      { name: 'Cloud', icon: <Cloud className={`${ICON} text-deeplime`} /> },
     ],
   },
 ];
 
 export default function TechStack() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
   return (
-    <section
-      id="tech-stack"
-      ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
-    >
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_40%,rgba(142,155,77,0.03)_0%,transparent_70%)] pointer-events-none -z-10" />
-
-      <div className="max-w-[1280px] mx-auto">
-        
-        {/* HEADER */}
-        <div
-          className={`flex flex-col items-center justify-center text-center mb-10 md:mb-12 transition-all duration-1000 ease-out ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {/* Main Heading */}
-          <h2 className="text-[clamp(2.125rem,4.5vw,3.75rem)] font-semibold leading-[0.96] tracking-[0.02em] text-[#E9E5DF] mb-4 font-sans text-center">
-            ENGINEERED WITH <br className="hidden sm:block" />
-            <span className="text-[#8E9B4D]">THE BEST</span>
-          </h2>
-
-          {/* Subtitle */}
-          <p className="text-[#9EA298] text-xs sm:text-sm md:text-base max-w-[580px] font-normal leading-relaxed text-center">
-            Technologies I use to turn ideas into production-ready AI products.
-          </p>
+    <section id="stack" className="relative w-full bg-cream py-24 md:py-32 lg:py-40">
+      <div className="shell">
+        <div className="max-w-[900px] mb-16 md:mb-20">
+          <Reveal className="eyebrow mb-7">Stack</Reveal>
+          <SplitHeading className="title-xl mb-8">
+            <span className="block text-ink">Tools I use</span>
+            <span className="block text-faint">to build the best.</span>
+          </SplitHeading>
+          <Reveal className="text-body text-[17px] md:text-[19px] leading-[1.6] max-w-[620px]">
+            <p>
+              The technologies behind the models, the APIs, the interfaces and everything
+              that ships them to production.
+            </p>
+          </Reveal>
         </div>
 
-        {/* 3-COLUMN × 2-ROW CLEAN CATEGORY GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {TECH_CATEGORIES.map((cat, idx) => (
-            <div
-              key={cat.title}
-              className={`flex flex-col border-t border-[#8E9B4D]/25 pt-5 transition-all duration-700 ease-out ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${idx * 70}ms` }}
-            >
-              {/* Category Label */}
-              <div className="flex items-center justify-between mb-4 pb-1.5">
-                <span className="font-mono text-xs uppercase tracking-[0.18em] font-semibold text-[#8E9B4D]">
+        <Reveal
+          stagger
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
+        >
+          {TECH_CATEGORIES.map((cat) => (
+            <div key={cat.title} className="card-surface lift p-8 md:p-9 flex flex-col">
+              <div className="flex items-center justify-between mb-7 pb-5 border-b border-line">
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-deeplime">
                   {cat.title}
                 </span>
-                <span className="font-mono text-[10px] text-[#8E9B4D]/50 uppercase">
-                  0{idx + 1}
+                <span className="font-mono text-[11px] text-faint">
+                  {String(cat.items.length).padStart(2, '0')}
                 </span>
               </div>
 
-              {/* Technology Items */}
-              <div className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-1.5">
                 {cat.items.map((item) => (
-                  <div
+                  <li
                     key={item.name}
-                    className="group flex items-center gap-3.5 p-2 rounded-[5px] transition-all duration-300 cursor-default hover:bg-[#8E9B4D]/10 hover:shadow-[0_0_12px_rgba(142,155,77,0.12)]"
+                    className="group flex items-center gap-4 py-2.5 px-3 -mx-3 rounded-2xl transition-colors duration-300 hover:bg-cream"
                   >
-                    {/* Logo (Official Brand Color, Direct Rendering, No Square Background) */}
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
+                    <span className="w-[22px] h-[22px] flex items-center justify-center shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110">
                       {item.icon}
-                    </div>
-
-                    {/* Technology Name */}
-                    <span className="text-[#E9E5DF] text-xs sm:text-sm font-sans font-medium tracking-wide group-hover:text-white transition-colors">
+                    </span>
+                    <span className="text-ink text-[15px] font-medium tracking-[-0.01em]">
                       {item.name}
                     </span>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
-        </div>
-
+        </Reveal>
       </div>
     </section>
   );

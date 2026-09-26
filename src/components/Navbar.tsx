@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { scrollToSection } from './motion/MotionProvider';
 
 interface NavItem {
   label: string;
@@ -15,22 +16,16 @@ const NAV_ITEMS: NavItem[] = [
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string>('home');
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  // Track scroll position for header style and active section highlight
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-
-      // Determine active section based on vertical position
-      const scrollPosition = window.scrollY + 120;
+      const scrollPosition = window.scrollY + 140;
       for (const item of NAV_ITEMS) {
         const el = document.getElementById(item.id);
         if (el) {
           const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
+          if (scrollPosition >= top && scrollPosition < top + el.offsetHeight) {
             setActiveSection(item.id);
             break;
           }
@@ -39,148 +34,123 @@ export default function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const go = (id: string) => {
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const yOffset = -90; // Offset for floating navbar height & top margin
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
+    scrollToSection(id, -110);
   };
 
   return (
-    <header className="fixed top-4 md:top-5 left-4 md:left-8 right-4 md:right-8 z-50 max-w-[1240px] mx-auto pointer-events-auto">
-      {/* FLOATING CONTAINER NAVBAR */}
-      <div
-        className={`w-full h-[60px] md:h-[64px] px-5 md:px-7 rounded-full flex items-center justify-between transition-all duration-300 border ${
-          isScrolled
-            ? 'bg-[#070C08]/85 backdrop-blur-md border-[#8E9B4D]/30 shadow-xl shadow-black/50'
-            : 'bg-[#070C08]/70 backdrop-blur-md border-[#8E9B4D]/20 shadow-lg shadow-black/30'
-        }`}
-      >
-        {/* LEFT: Branding Block with /logo.png */}
-        <button
-          onClick={() => scrollToSection('home')}
-          className="flex items-center gap-3 group focus:outline-none text-left cursor-pointer"
-          aria-label="Abdul Manan - Return to top"
-        >
-          {/* Logo Image */}
-          <img
-            src="/logo.png"
-            alt="Abdul Manan Logo"
-            className="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-300 group-hover:scale-105"
-          />
-
-          {/* Name & Title */}
-          <div className="flex flex-col justify-center">
-            <span className="text-[#F3F3EE] font-sans font-medium text-sm md:text-[15px] leading-tight tracking-tight group-hover:text-white transition-colors">
+    <header className="fixed top-4 md:top-6 left-0 right-0 z-50 px-4 md:px-8 pointer-events-none">
+      <div className="mx-auto max-w-[1180px] pointer-events-auto">
+        {/* FLOATING GLASS PILL */}
+        <div className="w-full h-[62px] md:h-[68px] pl-5 pr-2 md:pl-7 md:pr-2.5 rounded-full flex items-center justify-between bg-white/70 backdrop-blur-xl border border-white/80 shadow-[0_8px_32px_-8px_rgba(16,19,12,0.12)]">
+          {/* LEFT: brand */}
+          <button
+            onClick={() => go('home')}
+            className="flex items-center gap-2.5 group focus:outline-none text-left cursor-pointer"
+            aria-label="Abdul Manan — return to top"
+          >
+            <img
+              src="/logo.png"
+              alt=""
+              className="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-500 group-hover:scale-105"
+            />
+            <span className="font-display font-bold text-ink text-[16px] md:text-[17px] tracking-[-0.03em]">
               Abdul Manan
             </span>
-            <span className="text-[#8E9B4D] font-mono text-[9px] md:text-[10px] uppercase font-semibold tracking-[0.2em] leading-tight mt-0.5">
-              AI ENGINEER
-            </span>
-          </div>
-        </button>
-
-        {/* CENTER NAVIGATION: Visually centred floating links */}
-        <nav className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-7 lg:gap-9">
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`group relative py-1 text-xs lg:text-[13px] font-sans font-medium tracking-wide transition-colors duration-300 focus:outline-none cursor-pointer bg-transparent bg-none border-none shadow-none ${
-                  isActive
-                    ? 'text-[#F3F3EE] font-semibold'
-                    : 'text-[#A4A79F] hover:text-[#F3F3EE]'
-                }`}
-              >
-                <span>{item.label}</span>
-
-                {/* Animated Olive Underline: Animates from center outward on hover */}
-                <span
-                  className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-[#8E9B4D] transition-all duration-300 ease-out ${
-                    isActive
-                      ? 'w-full shadow-[0_0_8px_#8E9B4D]'
-                      : 'w-0 group-hover:w-full'
-                  }`}
-                />
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* RIGHT: Outlined Pill CTA */}
-        <div className="hidden md:flex items-center">
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="group inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full border border-[#8E9B4D]/40 bg-transparent text-[#F3F3EE] text-xs lg:text-[13px] font-sans font-medium tracking-wide transition-all duration-300 hover:bg-[#8E9B4D]/10 hover:border-[#8E9B4D] hover:shadow-[0_0_16px_rgba(142,155,77,0.2)] focus:outline-none cursor-pointer"
-          >
-            <span>Let's Talk</span>
-            <span className="text-[#8E9B4D] transition-transform duration-300 group-hover:translate-x-1 font-mono text-sm">
-              →
-            </span>
           </button>
-        </div>
 
-        {/* MOBILE MENU TRIGGER */}
-        <div className="flex md:hidden items-center gap-3">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-[#F3F3EE] hover:text-[#8E9B4D] hover:bg-[#8E9B4D]/10 transition-colors focus:outline-none"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? (
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* MOBILE NAVIGATION PANEL */}
-      {mobileMenuOpen && (
-        <div className="md:hidden mt-3 rounded-2xl border border-[#8E9B4D]/25 bg-[#070C08]/95 backdrop-blur-xl px-6 py-5 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-3">
+          {/* CENTER: links */}
+          <nav className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-8">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`flex items-center justify-between text-sm font-sans font-medium tracking-wide py-2 border-b border-[#46483a]/15 text-left transition-colors ${
-                    isActive ? 'text-[#F3F3EE] font-semibold' : 'text-[#A4A79F] hover:text-[#F3F3EE]'
+                  onClick={() => go(item.id)}
+                  className={`group relative py-1.5 text-[14px] font-sans transition-colors duration-300 focus:outline-none cursor-pointer ${
+                    isActive ? 'text-ink font-medium' : 'text-body hover:text-ink'
                   }`}
                 >
-                  <span>{item.label}</span>
-                  {isActive && <span className="w-2 h-2 rounded-full bg-[#8E9B4D] shadow-[0_0_8px_#8E9B4D]" />}
+                  {item.label}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-lime transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
                 </button>
               );
             })}
           </nav>
 
+          {/* RIGHT: CTA */}
+          <div className="hidden md:flex items-center">
+            <button
+              onClick={() => go('contact')}
+              className="group inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full bg-ink text-cream text-[14px] font-sans font-medium transition-colors duration-300 hover:bg-[#1C2114] focus:outline-none cursor-pointer"
+            >
+              <span>Let's talk</span>
+              <span className="grid place-items-center w-9 h-9 rounded-full bg-lime text-ink overflow-hidden">
+                <span className="col-start-1 row-start-1 w-full text-center leading-none transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%]">
+                  →
+                </span>
+                <span className="col-start-1 row-start-1 w-full text-center leading-none -translate-x-[140%] transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0">
+                  →
+                </span>
+              </span>
+            </button>
+          </div>
+
+          {/* MOBILE TRIGGER */}
           <button
-            onClick={() => scrollToSection('contact')}
-            className="group mt-1 w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-[#8E9B4D]/40 bg-transparent text-[#F3F3EE] text-xs font-sans font-medium tracking-wide transition-all duration-300 active:bg-[#8E9B4D]/20 hover:border-[#8E9B4D]"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex md:hidden items-center justify-center w-11 h-11 rounded-full text-ink hover:bg-ink/5 transition-colors focus:outline-none"
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
           >
-            <span>Let's Talk</span>
-            <span className="text-[#8E9B4D] transition-transform duration-300 group-hover:translate-x-1 font-mono">
-              →
-            </span>
+            {mobileMenuOpen ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            )}
           </button>
         </div>
-      )}
+
+        {/* MOBILE PANEL */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden mt-3 rounded-[28px] border border-line bg-white/95 backdrop-blur-xl px-6 py-5 flex flex-col gap-1 shadow-[0_12px_40px_-12px_rgba(16,19,12,0.2)]">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => go(item.id)}
+                  className={`flex items-center justify-between text-[15px] font-sans py-3 border-b border-line last:border-0 text-left transition-colors ${
+                    isActive ? 'text-ink font-medium' : 'text-body'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {isActive && <span className="w-5 h-[2px] rounded-full bg-lime" />}
+                </button>
+              );
+            })}
+            <button
+              onClick={() => go('contact')}
+              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-ink text-cream text-[14px] font-medium"
+            >
+              Let's talk <span className="text-lime">→</span>
+            </button>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

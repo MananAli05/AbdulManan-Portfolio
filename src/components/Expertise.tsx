@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import SplitHeading from './motion/SplitHeading';
+import Reveal from './motion/Reveal';
 
 // REAL OFFICIAL TECHNOLOGY BRAND LOGOS (Crisp SVG Icons)
 const PythonLogo = () => (
@@ -102,11 +103,14 @@ const N8nLogo = () => (
   </svg>
 );
 
+
 interface SolutionCard {
   id: string;
   number: string;
   title: string;
   description: string;
+  /** Column span on the 6-column bento grid at lg and above. */
+  span: string;
   logos: { component: React.JSX.Element; bg: string; name: string }[];
 }
 
@@ -114,8 +118,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'ai-web-apps',
     number: '01',
-    title: 'AI-POWERED WEB APPLICATIONS',
-    description: 'Production-ready AI web apps with intelligent features, dashboards, user systems and scalable backend infrastructure.',
+    title: 'AI-powered web applications',
+    description:
+      'Production-ready AI web apps with intelligent features, dashboards, user systems and scalable backend infrastructure.',
+    span: 'lg:col-span-4',
     logos: [
       { component: <ReactLogo />, bg: 'bg-[#0E1726]', name: 'React' },
       { component: <PythonLogo />, bg: 'bg-[#F0F4F8]', name: 'Python' },
@@ -126,8 +132,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'llm-rag',
     number: '02',
-    title: 'LLM & RAG SOLUTIONS',
-    description: 'Knowledge assistants, document Q&A systems and context-aware AI applications that answer using private/business data.',
+    title: 'LLM & RAG solutions',
+    description:
+      'Knowledge assistants, document Q&A systems and context-aware AI applications that answer using private/business data.',
+    span: 'lg:col-span-2',
     logos: [
       { component: <OpenAILogo />, bg: 'bg-[#E6F7F2]', name: 'OpenAI' },
       { component: <LangChainLogo />, bg: 'bg-[#E6F0F2]', name: 'LangChain' },
@@ -138,8 +146,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'voice-ai',
     number: '03',
-    title: 'VOICE AI AGENTS',
-    description: 'Real-time voice agents for customer support, lead qualification, appointment booking and automated conversations.',
+    title: 'Voice AI agents',
+    description:
+      'Real-time voice agents for customer support, lead qualification, appointment booking and automated conversations.',
+    span: 'lg:col-span-2',
     logos: [
       { component: <ElevenLabsLogo />, bg: 'bg-[#000000]', name: 'ElevenLabs' },
       { component: <TwilioLogo />, bg: 'bg-[#FDE8EA]', name: 'Twilio' },
@@ -150,8 +160,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'ai-automation',
     number: '04',
-    title: 'AI AUTOMATION & AGENTS',
-    description: 'AI agents and automated workflows that connect tools, process data, perform tasks and reduce repetitive business work.',
+    title: 'AI automation & agents',
+    description:
+      'AI agents and automated workflows that connect tools, process data, perform tasks and reduce repetitive business work.',
+    span: 'lg:col-span-4',
     logos: [
       { component: <N8nLogo />, bg: 'bg-[#FDECEF]', name: 'n8n' },
       { component: <OpenAILogo />, bg: 'bg-[#E6F7F2]', name: 'OpenAI' },
@@ -162,8 +174,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'ai-chatbots',
     number: '05',
-    title: 'AI CHATBOTS',
-    description: 'Intelligent chatbots for websites and messaging platforms that answer questions, capture leads and automate customer interactions.',
+    title: 'AI chatbots',
+    description:
+      'Intelligent chatbots for websites and messaging platforms that answer questions, capture leads and automate customer interactions.',
+    span: 'lg:col-span-3',
     logos: [
       { component: <WhatsAppLogo />, bg: 'bg-[#E8F8EE]', name: 'WhatsApp' },
       { component: <OpenAILogo />, bg: 'bg-[#E6F7F2]', name: 'OpenAI' },
@@ -174,8 +188,10 @@ const SOLUTIONS: SolutionCard[] = [
   {
     id: 'backend-apis',
     number: '06',
-    title: 'BACKEND & AI APIs',
-    description: 'Production backend systems, REST APIs, databases, authentication and infrastructure for AI-powered applications.',
+    title: 'Backend & AI APIs',
+    description:
+      'Production backend systems, REST APIs, databases, authentication and infrastructure for AI-powered applications.',
+    span: 'lg:col-span-3',
     logos: [
       { component: <FastAPILogo />, bg: 'bg-[#E6F4F1]', name: 'FastAPI' },
       { component: <PostgreSQLLogo />, bg: 'bg-[#EBF3F9]', name: 'PostgreSQL' },
@@ -186,109 +202,75 @@ const SOLUTIONS: SolutionCard[] = [
 ];
 
 export default function Expertise() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
   return (
-    <section
-      id="expertise"
-      ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
-    >
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(142,155,77,0.04)_0%,transparent_70%)] pointer-events-none -z-10" />
-
-      <div className="max-w-[1280px] mx-auto">
-        
-        {/* SECTION HEADER */}
-        <div
-          className={`flex flex-col items-center justify-center text-center mb-12 md:mb-16 transition-all duration-1000 ease-out ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {/* Main Heading */}
-          <h2 className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-semibold leading-[0.95] tracking-[0.02em] text-[#E9E5DF] mb-4 font-sans text-center">
-            SOLUTIONS <br className="hidden sm:block" />
-            <span className="text-[#8E9B4D]">I BUILD</span>
-          </h2>
-
-          {/* Subtitle */}
-          <p className="text-[#E9E5DF]/80 text-sm sm:text-base md:text-[17px] max-w-[780px] mx-auto font-normal leading-relaxed text-center">
-            I build intelligent digital products that solve real business problems — <br className="hidden md:block" />
-            from AI-powered applications and voice agents to automated workflows and scalable backend systems.
-          </p>
+    <section id="solutions" className="relative w-full bg-cream py-24 md:py-32 lg:py-40">
+      <div className="shell">
+        {/* Section head */}
+        <div className="max-w-[900px] mb-16 md:mb-20">
+          <Reveal className="eyebrow mb-7">Solutions</Reveal>
+          <SplitHeading className="title-xl mb-8">
+            <span className="block text-ink">Solutions</span>
+            <span className="block text-faint">I build.</span>
+          </SplitHeading>
+          <Reveal className="text-body text-[17px] md:text-[19px] leading-[1.6] max-w-[620px]">
+            <p>
+              End-to-end AI systems — from intelligent web applications and retrieval
+              pipelines to voice agents and the backends that run them.
+            </p>
+          </Reveal>
         </div>
 
-        {/* 6-CARD GRID (Main Surface #E9E5DF, Overlapping Real Brand Logos at Top, Number at Bottom Right) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-          {SOLUTIONS.map((card, idx) => (
-            <div
-              key={card.id}
-              className={`group relative p-7 sm:p-8 rounded-[12px] bg-[#E9E5DF] text-[#070C08] border border-[#D6D2CA] flex flex-col justify-between transition-all duration-350 ease-out hover:bg-[#F4F1EC] hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/20 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${idx * 80}ms` }}
+        {/* Bento grid */}
+        <Reveal stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 lg:gap-6">
+          {SOLUTIONS.map((item) => (
+            <article
+              key={item.id}
+              className={`group card-surface lift relative flex flex-col p-8 md:p-10 min-h-[290px] ${item.span}`}
             >
-              <div>
-                {/* Overlapping Large Circular Brand Icon Badge Group at Top */}
-                <div className="flex items-center gap-0 mb-6 pt-1">
-                  {card.logos.map((logoItem, lIdx) => (
-                    <div
-                      key={lIdx}
-                      title={logoItem.name}
-                      className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full ${logoItem.bg} border-2 border-[#E9E5DF] flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-105`}
-                      style={{
-                        marginLeft: lIdx > 0 ? '-14px' : '0',
-                        zIndex: card.logos.length - lIdx,
-                      }}
-                    >
-                      {logoItem.component}
-                    </div>
-                  ))}
-                </div>
+              {/* Corner number */}
+              <span
+                aria-hidden
+                className="absolute top-7 right-8 font-display font-bold text-[52px] leading-none tracking-[-0.05em] text-ink/[0.07] transition-colors duration-500 group-hover:text-lime/50"
+              >
+                {item.number}
+              </span>
 
-                {/* Strong Capability Title */}
-                <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#070C08] mb-3 font-sans group-hover:text-[#8E9B4D] transition-colors">
-                  {card.title}
-                </h3>
-
-                {/* 3-4 Line Capability Description */}
-                <p className="text-xs sm:text-sm text-[#4A5046] font-sans leading-relaxed">
-                  {card.description}
-                </p>
+              {/* Icon stack */}
+              <div className="flex items-center mb-8">
+                {item.logos.map((logoItem, lIdx) => (
+                  <div
+                    key={`${item.id}-${logoItem.name}`}
+                    title={logoItem.name}
+                    style={{
+                      marginLeft: lIdx > 0 ? '-12px' : '0',
+                      zIndex: item.logos.length - lIdx,
+                      // Each icon slides a little further than the last, so the
+                      // stack fans open on hover.
+                      ['--shift' as string]: `${lIdx * 6}px`,
+                    } as React.CSSProperties}
+                    className={`relative w-[52px] h-[52px] rounded-full ${logoItem.bg} border-[3px] border-white shadow-[0_2px_8px_rgba(16,19,12,0.10)] flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[var(--shift)]`}
+                  >
+                    {logoItem.component}
+                  </div>
+                ))}
               </div>
 
-              {/* Subtle 01-06 Number at Bottom-Right */}
-              <div className="flex justify-end pt-6">
-                <span className="font-mono text-2xl sm:text-3xl font-bold text-[#8E9B4D]/35 group-hover:text-[#8E9B4D]/60 transition-colors select-none">
-                  {card.number}
-                </span>
-              </div>
-            </div>
+              <h3 className="font-display font-bold text-ink text-[clamp(22px,1.6vw,30px)] tracking-[-0.04em] leading-[1.1] mb-4 pr-16">
+                {item.title}
+              </h3>
+
+              <p className="text-body text-[15px] md:text-[16px] leading-[1.6] max-w-[52ch]">
+                {item.description}
+              </p>
+
+              {/* Hover rule */}
+              <span className="mt-auto pt-7 flex items-center gap-2 text-deeplime text-[13px] font-medium opacity-0 -translate-x-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-x-0">
+                <span className="h-[1.5px] w-7 bg-lime" />
+                Available
+              </span>
+            </article>
           ))}
-        </div>
-
+        </Reveal>
       </div>
     </section>
   );

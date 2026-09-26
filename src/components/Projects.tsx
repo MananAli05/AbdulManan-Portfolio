@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import SplitHeading from './motion/SplitHeading';
+import Reveal from './motion/Reveal';
+import ArrowButton from './ui/ArrowButton';
+import { gsap, prefersReducedMotion, EASE } from '../lib/motion';
 
 // Tech SVG Icons in Recognizable Original Brand Colors
 const ReactIcon = () => (
@@ -89,18 +93,18 @@ const GoogleMLKitIcon = () => (
 
 const CNNIcon = () => (
   <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-    <circle cx="6" cy="6" r="2" fill="#8E9B4D" />
-    <circle cx="6" cy="18" r="2" fill="#8E9B4D" />
-    <circle cx="12" cy="12" r="2" fill="#8E9B4D" />
-    <circle cx="18" cy="6" r="2" fill="#8E9B4D" />
-    <circle cx="18" cy="18" r="2" fill="#8E9B4D" />
-    <path stroke="#8E9B4D" strokeWidth="1.2" fill="none" d="M8 6h8M8 18h8M7.5 7.5l3 3M7.5 16.5l3-3M13.5 10.5l3-3M13.5 13.5l3 3" />
+    <circle cx="6" cy="6" r="2" fill="#5E7D12" />
+    <circle cx="6" cy="18" r="2" fill="#5E7D12" />
+    <circle cx="12" cy="12" r="2" fill="#5E7D12" />
+    <circle cx="18" cy="6" r="2" fill="#5E7D12" />
+    <circle cx="18" cy="18" r="2" fill="#5E7D12" />
+    <path stroke="#5E7D12" strokeWidth="1.2" fill="none" d="M8 6h8M8 18h8M7.5 7.5l3 3M7.5 16.5l3-3M13.5 10.5l3-3M13.5 13.5l3 3" />
   </svg>
 );
 
 const OCRIcon = () => (
   <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-    <path fill="none" stroke="#8E9B4D" strokeWidth="1.5" strokeLinecap="round" d="M4 8V5h3M17 5h3v3M4 16v3h3M20 16v3h-3M7 10h10M7 14h7" />
+    <path fill="none" stroke="#5E7D12" strokeWidth="1.5" strokeLinecap="round" d="M4 8V5h3M17 5h3v3M4 16v3h3M20 16v3h-3M7 10h10M7 14h7" />
   </svg>
 );
 
@@ -110,9 +114,10 @@ const GitHubOctocatIcon = () => (
   </svg>
 );
 
+
 interface TechItem {
   name: string;
-  icon?: React.JSX.Element;
+  icon: React.JSX.Element;
 }
 
 interface ProjectSlide {
@@ -137,7 +142,8 @@ const PROJECTS: ProjectSlide[] = [
     number: '01',
     title: 'Sage & Salt',
     tagline: 'AI Restaurant Management & Ordering System',
-    description: 'AI-powered restaurant management and ordering system combining Voice AI, WhatsApp automation, QR ordering, and intelligent workflows to streamline restaurant operations and customer service.',
+    description:
+      'AI-powered restaurant management and ordering system combining Voice AI, WhatsApp automation, QR ordering, and intelligent workflows to streamline restaurant operations and customer service.',
     features: [
       'Voice AI Agent for phone ordering',
       'WhatsApp ordering & automated conversations',
@@ -154,9 +160,9 @@ const PROJECTS: ProjectSlide[] = [
       { name: 'ElevenLabs', icon: <ElevenLabsIcon /> },
     ],
     mockupImage: '/sag&salt.png',
-    githubUrl: 'https://github.com/manan/sage-and-salt',
+    githubUrl: 'https://github.com/MananAli05',
     demoUrl: 'https://sage-and-salt.vercel.app/',
-    demoButtonLabel: 'Live Demo ↗',
+    demoButtonLabel: 'Live demo',
     placeholderLabel: 'SAGE & SALT MOCKUP PREVIEW',
   },
   {
@@ -164,7 +170,8 @@ const PROJECTS: ProjectSlide[] = [
     number: '02',
     title: 'Multilingual AI Healthcare',
     tagline: 'Intelligent Medical Assistant & Diagnostic Platform',
-    description: 'AI-powered multilingual healthcare assistant combining intelligent symptom checking, X-ray analysis, lab report interpretation, voice interaction, and emergency support in a single mobile experience.',
+    description:
+      'AI-powered multilingual healthcare assistant combining intelligent symptom checking, X-ray analysis, lab report interpretation, voice interaction, and emergency support in a single mobile experience.',
     features: [
       'Multilingual AI symptom checker with voice input',
       'AI-based X-ray analysis and pneumonia detection',
@@ -184,9 +191,8 @@ const PROJECTS: ProjectSlide[] = [
       { name: 'OCR', icon: <OCRIcon /> },
     ],
     mockupImage: '/medical.png',
-    githubUrl: '#',
     demoUrl: '/projects/medicare',
-    demoButtonLabel: 'VIEW CASE STUDY →',
+    demoButtonLabel: 'View case study',
     isInternalLink: true,
     placeholderLabel: 'MULTILINGUAL AI HEALTHCARE MOCKUP PREVIEW',
   },
@@ -194,38 +200,36 @@ const PROJECTS: ProjectSlide[] = [
 
 export default function Projects() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const panelRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+  const project = PROJECTS[currentIndex];
+  const total = PROJECTS.length;
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+  // Cross-fade the panel whenever the slide changes.
+  useLayoutEffect(() => {
+    const el = panelRef.current;
+    if (!el || prefersReducedMotion()) return;
 
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, x: 28 * direction, filter: 'blur(6px)' },
+        { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: EASE }
+      );
+    }, el);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % PROJECTS.length);
+    return () => ctx.revert();
+  }, [currentIndex, direction]);
+
+  const goTo = (next: number) => {
+    setDirection(next > currentIndex ? 1 : -1);
+    setCurrentIndex((next + total) % total);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
-  };
+  const prev = () => goTo(currentIndex - 1);
+  const next = () => goTo(currentIndex + 1);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -233,253 +237,173 @@ export default function Projects() {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    if (diff > 50) {
-      nextSlide();
-    } else if (diff < -50) {
-      prevSlide();
-    }
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 60) (delta < 0 ? next : prev)();
     touchStartX.current = null;
   };
 
-  const currentProject = PROJECTS[currentIndex];
+  const handleDemoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!project.isInternalLink || !project.demoUrl) return;
+    e.preventDefault();
+    window.history.pushState({}, '', project.demoUrl);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
 
   return (
-    <section
-      id="projects"
-      ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
-    >
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_30%,rgba(142,155,77,0.04)_0%,transparent_70%)] pointer-events-none -z-10" />
-
-      <div className="max-w-[1280px] mx-auto">
-        
-        {/* SECTION HEADER */}
-        <div
-          className={`flex flex-col items-center justify-center text-center mb-8 sm:mb-10 transition-all duration-1000 ease-out ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <h2 className="text-[clamp(2.125rem,4.5vw,3.75rem)] font-semibold leading-[0.96] tracking-[0.02em] text-[#E9E5DF] mb-3 font-sans text-center">
-            FEATURED WORK <br className="hidden sm:block" />
-            BUILT TO SOLVE <span className="text-[#8E9B4D]">REAL PROBLEMS</span>
-          </h2>
-          <p className="text-[#E9E5DF]/80 text-xs sm:text-sm md:text-base max-w-[660px] mx-auto font-normal leading-relaxed text-center">
-            A selection of AI systems, intelligent applications, and production-focused products engineered to solve complex business challenges.
-          </p>
-        </div>
-
-        {/* TOP CAROUSEL NAVIGATION ROW (ABOVE THE PROJECT CARD) */}
-        <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#8E9B4D]/15">
-          {/* TOP LEFT: Compact rounded-square arrow buttons [ ← ] [ → ] */}
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={prevSlide}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-[6px] border border-[#8E9B4D]/35 bg-[#121B10]/70 text-[#E9E5DF] hover:bg-[#8E9B4D] hover:text-[#070C08] hover:border-[#8E9B4D] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 shadow-sm"
-              aria-label="Previous Project"
-            >
-              <svg className="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={nextSlide}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-[6px] border border-[#8E9B4D]/35 bg-[#121B10]/70 text-[#E9E5DF] hover:bg-[#8E9B4D] hover:text-[#070C08] hover:border-[#8E9B4D] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 shadow-sm"
-              aria-label="Next Project"
-            >
-              <svg className="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+    <section id="projects" className="relative w-full bg-cream py-24 md:py-32 lg:py-40">
+      <div className="shell">
+        {/* Section head */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14 md:mb-16">
+          <div className="max-w-[900px]">
+            <Reveal className="eyebrow mb-7">Featured work</Reveal>
+            <SplitHeading className="title-xl">
+              <span className="block text-ink">Built to solve</span>
+              <span className="block text-faint">real problems.</span>
+            </SplitHeading>
           </div>
 
-          {/* TOP RIGHT: 01 / 02 Indicator + 2 Horizontal Indicator Lines */}
-          <div className="flex flex-col items-end gap-1">
-            <span className="font-mono text-xs tracking-widest text-[#E9E5DF] font-bold">
-              <span className="text-[#8E9B4D]">0{currentIndex + 1}</span> / 0{PROJECTS.length}
-            </span>
-            
-            {/* Two Thin Horizontal Indicator Lines */}
-            <div className="flex items-center gap-1.5">
-              {PROJECTS.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`h-[3px] rounded-full transition-all duration-500 cursor-pointer ${
-                    currentIndex === index
-                      ? 'w-8 bg-[#8E9B4D] shadow-[0_0_8px_rgba(142,155,77,0.5)]'
-                      : 'w-3.5 bg-[#8E9B4D]/25 hover:bg-[#8E9B4D]/50'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
+          {/* Counter + controls */}
+          <Reveal className="flex items-center gap-8 shrink-0">
+            <div className="flex flex-col gap-3">
+              <span className="font-mono text-[13px] text-ink tracking-[0.06em]">
+                {project.number} <span className="text-faint">/ {String(total).padStart(2, '0')}</span>
+              </span>
+              <span className="block w-[120px] h-[3px] rounded-full bg-line overflow-hidden">
+                <span
+                  className="block h-full rounded-full bg-lime transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
                 />
-              ))}
+              </span>
             </div>
-          </div>
+
+            <div className="flex items-center gap-2.5">
+              <button
+                onClick={prev}
+                aria-label="Previous project"
+                className="grid place-items-center w-12 h-12 rounded-full border border-line text-ink transition-colors duration-300 hover:bg-ink hover:border-ink hover:text-cream cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={next}
+                aria-label="Next project"
+                className="grid place-items-center w-12 h-12 rounded-full border border-line text-ink transition-colors duration-300 hover:bg-ink hover:border-ink hover:text-cream cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </Reveal>
         </div>
 
-        {/* CAROUSEL SLIDE CONTAINER */}
-        <div
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          className="relative w-full"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-            
-            {/* LEFT SIDE (~58–60%): Clean Visually Dominant Project Mockup Image */}
-            <div className="lg:col-span-7 flex justify-center items-center group relative w-full">
-              {currentProject.mockupImage ? (
-                <div className="w-full relative flex items-center justify-center p-1 rounded-[10px] bg-[#0A1009]/60 border border-[#8E9B4D]/25 shadow-[0_12px_35px_rgba(0,0,0,0.55)] group-hover:border-[#8E9B4D]/50 transition-all duration-500 overflow-hidden">
-                  {/* Subtle ambient olive glow behind image */}
-                  <div className="absolute inset-0 bg-radial from-[#8E9B4D]/15 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500 pointer-events-none" />
-                  
-                  <img
-                    src={currentProject.mockupImage}
-                    alt={currentProject.title}
-                    className="w-full h-auto max-h-[440px] sm:max-h-[480px] lg:max-h-[500px] object-contain rounded-[6px] transition-transform duration-700 ease-out group-hover:scale-[1.015]"
-                  />
-                </div>
+        {/* Project card */}
+        <Reveal>
+          <div
+            ref={panelRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="card-surface overflow-hidden grid grid-cols-1 lg:grid-cols-12"
+          >
+            {/* Image */}
+            <div className="lg:col-span-7 relative bg-[#F2F0E8] flex items-center justify-center p-6 sm:p-10 lg:p-14 min-h-[300px]">
+              {project.mockupImage ? (
+                <img
+                  src={project.mockupImage}
+                  alt={`${project.title} — product preview`}
+                  className="w-full h-auto max-h-[520px] object-contain rounded-[18px]"
+                  loading="lazy"
+                />
               ) : (
-                /* Mockup Placeholder Frame when image not present */
-                <div className="w-full aspect-[16/10] max-h-[440px] rounded-[12px] bg-[#121B10] border border-[#8E9B4D]/25 shadow-2xl p-5 flex flex-col justify-between items-center text-center relative overflow-hidden transition-all duration-500 group-hover:border-[#8E9B4D]/50">
-                  <div className="w-full flex items-center justify-between pb-2 border-b border-[#8E9B4D]/20">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                      <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                      <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
-                    </div>
-                    <span className="text-[10px] font-mono text-[#8E9B4D] uppercase tracking-wider">
-                      PROJECT MOCKUP PREVIEW // {currentProject.number}
-                    </span>
-                  </div>
-
-                  <div className="my-auto flex flex-col items-center justify-center p-4">
-                    <div className="w-12 h-12 rounded-full border border-[#8E9B4D]/40 bg-[#8E9B4D]/10 flex items-center justify-center text-[#8E9B4D] font-mono text-base font-bold mb-3 shadow-lg">
-                      {currentProject.number}
-                    </div>
-                    <h4 className="text-lg sm:text-xl font-bold text-[#E9E5DF] tracking-tight mb-1">
-                      {currentProject.title}
-                    </h4>
-                    <p className="text-[11px] font-mono text-[#8E9B4D] tracking-wider uppercase max-w-xs">
-                      {currentProject.placeholderLabel}
-                    </p>
-                  </div>
-
-                  <div className="w-full pt-2 border-t border-[#8E9B4D]/15 flex items-center justify-between text-[9px] font-mono text-[#9EA298]">
-                    <span>16:10 ASPECT RATIO</span>
-                    <span className="text-[#8E9B4D]">READY FOR FINAL IMAGE</span>
-                  </div>
-                </div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+                  {project.placeholderLabel}
+                </span>
               )}
             </div>
 
-            {/* RIGHT SIDE (~40–42%): Content & Overlapping Description Card */}
-            <div className="lg:col-span-5 flex flex-col justify-center relative z-10">
-              
-              {/* Small label */}
-              <div className="flex items-center gap-2.5 mb-2">
-                <span className="font-mono text-[11px] font-semibold text-[#8E9B4D] uppercase tracking-[0.18em]">
-                  FEATURED PROJECT
-                </span>
-                <span className="font-mono text-[11px] text-[#8E9B4D]/60 font-semibold">
-                  // {currentProject.number}
-                </span>
-              </div>
+            {/* Details */}
+            <div className="lg:col-span-5 p-8 sm:p-10 lg:p-12 flex flex-col">
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-deeplime mb-5">
+                {project.tagline}
+              </span>
 
-              {/* Project Name */}
-              <h3 className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#E9E5DF] tracking-tight leading-tight mb-3">
-                {currentProject.title}
+              <h3 className="font-display font-bold text-ink text-[clamp(28px,2.6vw,44px)] tracking-[-0.045em] leading-[1.02] mb-5">
+                {project.title}
               </h3>
 
-              {/* Compact Description Card (Slightly Overlapping Left Image on Desktop) */}
-              <div className="relative lg:-ml-8 p-4 sm:p-5 rounded-[10px] bg-[#162214] border border-[#8E9B4D]/35 shadow-xl text-[#9EA298] text-xs sm:text-sm leading-relaxed mb-4 backdrop-blur-md">
-                <p className="text-xs sm:text-[13px] text-[#E9E5DF] font-normal leading-relaxed">
-                  {currentProject.description}
-                </p>
-              </div>
+              <p className="text-body text-[15px] md:text-[16px] leading-[1.65] mb-8">
+                {project.description}
+              </p>
 
-              {/* Key Features */}
-              {currentProject.features && currentProject.features.length > 0 && (
-                <div className="mb-4">
-                  <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-1.5 font-semibold">
-                    KEY FEATURES
+              {/* Features */}
+              <ul className="flex flex-col gap-3 mb-9">
+                {project.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-[15px] text-ink leading-[1.5]">
+                    <span className="mt-[9px] w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Tech */}
+              <div className="flex flex-wrap gap-2 mb-9 pb-9 border-b border-line">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech.name}
+                    className="inline-flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-full bg-cream border border-line text-[13px] text-ink"
+                  >
+                    <span className="w-4 h-4 flex items-center justify-center">{tech.icon}</span>
+                    {tech.name}
                   </span>
-                  <ul className="space-y-1 text-xs text-[#9EA298]">
-                    {currentProject.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <span className="text-[#8E9B4D] text-xs font-mono mt-0.5">•</span>
-                        <span className="text-[#E9E5DF]/90 font-normal">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Tech Stack Chips with Real Logos & Hover Glow */}
-              <div className="mb-5">
-                <span className="font-mono text-[10px] text-[#8E9B4D] uppercase tracking-wider block mb-2 font-semibold">
-                  TECH STACK
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {currentProject.techStack.map((tech) => (
-                    <div
-                      key={tech.name}
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-[5px] bg-[#0E150D] border border-[#8E9B4D]/25 text-[11px] font-mono text-[#E9E5DF] hover:border-[#8E9B4D] hover:shadow-[0_0_10px_rgba(142,155,77,0.2)] transition-all duration-300 cursor-default"
-                    >
-                      {tech.icon && (
-                        <span className="w-3.5 h-3.5 flex items-center justify-center">
-                          {tech.icon}
-                        </span>
-                      )}
-                      <span>{tech.name}</span>
-                    </div>
-                  ))}
-                </div>
+                ))}
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-3.5 border-t border-[#8E9B4D]/15">
-                {currentProject.isInternalLink ? (
-                  <a
-                    href={currentProject.demoUrl}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentProject.demoUrl) {
-                        window.history.pushState({}, '', currentProject.demoUrl);
-                        window.dispatchEvent(new Event('popstate'));
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }
-                    }}
-                    className="inline-flex items-center gap-1.5 bg-[#8E9B4D] hover:bg-[#a6b256] text-[#070C08] font-mono text-[11px] font-semibold uppercase tracking-wider px-4 py-2 rounded-[4px] shadow-sm transition-all duration-300 hover:translate-x-0.5 cursor-pointer"
+              {/* Actions */}
+              <div className="flex flex-wrap items-center gap-3 mt-auto">
+                {project.demoUrl && (
+                  <ArrowButton
+                    href={project.demoUrl}
+                    onClick={project.isInternalLink ? handleDemoClick : undefined}
+                    external={!project.isInternalLink}
+                    variant="ink"
                   >
-                    {currentProject.demoButtonLabel || 'VIEW CASE STUDY →'}
-                  </a>
-                ) : (
+                    {project.demoButtonLabel ?? 'View project'}
+                  </ArrowButton>
+                )}
+                {project.githubUrl && (
                   <a
-                    href={currentProject.demoUrl || '#'}
-                    target={currentProject.demoUrl && currentProject.demoUrl !== '#' ? '_blank' : undefined}
+                    href={project.githubUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-[#8E9B4D] hover:bg-[#a6b256] text-[#070C08] font-mono text-[11px] font-semibold uppercase tracking-wider px-4 py-2 rounded-[4px] shadow-sm transition-all duration-300 hover:translate-x-0.5 cursor-pointer"
+                    className="inline-flex items-center gap-2.5 px-6 py-[14px] rounded-full border border-line text-ink text-[14px] font-medium transition-colors duration-300 hover:border-ink"
                   >
-                    {currentProject.demoButtonLabel || 'Live Demo ↗'}
+                    <span className="w-4 h-4 flex items-center justify-center">
+                      <GitHubOctocatIcon />
+                    </span>
+                    GitHub
                   </a>
                 )}
-                <a
-                  href={currentProject.githubUrl || '#'}
-                  target={currentProject.githubUrl && currentProject.githubUrl !== '#' ? '_blank' : undefined}
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 bg-transparent border border-[#8E9B4D]/40 hover:border-[#8E9B4D] text-[#E9E5DF] font-mono text-[11px] font-medium uppercase tracking-wider px-4 py-2 rounded-[4px] transition-all duration-300 hover:bg-[#8E9B4D]/10 hover:shadow-[0_0_10px_rgba(142,155,77,0.2)] cursor-pointer"
-                >
-                  <GitHubOctocatIcon />
-                  <span>GitHub ↗</span>
-                </a>
               </div>
             </div>
-
           </div>
-        </div>
+        </Reveal>
 
+        {/* Slide dots */}
+        <div className="flex items-center justify-center gap-2.5 mt-10">
+          {PROJECTS.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => goTo(i)}
+              aria-label={`Show ${p.title}`}
+              aria-current={i === currentIndex}
+              className={`h-[3px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer ${
+                i === currentIndex ? 'w-10 bg-lime' : 'w-5 bg-line hover:bg-faint'
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

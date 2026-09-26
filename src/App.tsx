@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import MotionProvider from './components/motion/MotionProvider';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,7 +11,6 @@ import Education from './components/Education';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
-import ShaderBackground from './components/ShaderBackground';
 import MedicareCaseStudy from './components/MedicareCaseStudy';
 
 export default function App() {
@@ -25,31 +25,34 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  const isMedicareCaseStudy = currentPath === '/projects/medicare' || currentPath === '/projects/medicare/';
+  const isMedicareCaseStudy =
+    currentPath === '/projects/medicare' || currentPath === '/projects/medicare/';
 
   if (isMedicareCaseStudy) {
     return (
       <>
-        <ShaderBackground />
+        <MotionProvider />
         <MedicareCaseStudy />
       </>
     );
   }
+
   return (
     <>
-      <ShaderBackground />
+      <MotionProvider />
       <Navbar />
       <SocialSidebar />
-      <Hero />
-      <About />
-      <Expertise />
-      <TechStack />
-      <Projects />
-      <Experience />
-      <Education />
-      <ContactSection />
+      <main>
+        <Hero />
+        <About />
+        <Expertise />
+        <TechStack />
+        <Projects />
+        <Experience />
+        <Education />
+        <ContactSection />
+      </main>
       <Footer />
     </>
   );
 }
-

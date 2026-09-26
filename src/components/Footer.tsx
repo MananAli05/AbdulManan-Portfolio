@@ -1,166 +1,159 @@
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
 import FloatingAiWidget from './FloatingAiWidget';
+import SplitHeading from './motion/SplitHeading';
+import Reveal from './motion/Reveal';
+import { scrollToSection } from './motion/MotionProvider';
+
+const EXPLORE = [
+  { label: 'Home', id: 'home' },
+  { label: 'About', id: 'about' },
+  { label: 'Work', id: 'projects' },
+  { label: 'Experience', id: 'experience' },
+  { label: 'Contact', id: 'collaboration' },
+];
+
+const SOLUTIONS = [
+  'AI-powered web applications',
+  'LLM & RAG solutions',
+  'Voice AI agents',
+  'AI automation & agents',
+  'AI chatbots',
+  'Backend & AI APIs',
+];
+
+const SOCIALS = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abdul-manan05', Icon: FaLinkedinIn },
+  { label: 'GitHub', href: 'https://github.com/MananAli05', Icon: FaGithub },
+  { label: 'Email', href: 'mailto:abdulmannan.developer@gmail.com', Icon: FiMail },
+];
+
+const ARROW_OUT =
+  'col-start-1 row-start-1 w-full text-center leading-none transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%]';
+const ARROW_IN =
+  'col-start-1 row-start-1 w-full text-center leading-none -translate-x-[140%] transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0';
 
 export default function Footer() {
   return (
     <>
       <footer
         id="contact"
-        className="relative py-16 sm:py-20 md:py-24 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
+        className="relative bg-ink text-cream rounded-t-[48px] overflow-hidden mt-8"
       >
-        {/* Floating glow behind footer content */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-[#8E9B4D]/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+        <div className="shell pt-24 md:pt-32 pb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10">
+            {/* LEFT */}
+            <div className="lg:col-span-7">
+              <SplitHeading className="title-lg mb-8 text-cream">
+                <span className="block">Let&rsquo;s build something</span>
+                <span className="block text-lime">intelligent.</span>
+              </SplitHeading>
 
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          
+              <Reveal className="text-cream/60 text-[17px] md:text-[19px] leading-[1.6] max-w-[560px] mb-12">
+                <p>
+                  Have an idea, product, or workflow that could be smarter? Let&rsquo;s turn
+                  it into something practical, scalable, and ready for the real world.
+                </p>
+              </Reveal>
 
-          {/* VERY LARGE HEADLINE */}
-          <h2 className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-semibold leading-[0.92] tracking-[0.015em] text-[#E9E5DF] max-w-[1000px] mx-auto mb-6 text-center font-sans">
-            LET'S BUILD SOMETHING <br />
-            <span className="text-[#8E9B4D]">INTELLIGENT.</span>
-          </h2>
-
-          {/* SUBTITLE UNDER HEADING */}
-          <p className="text-[#9EA298] text-xs sm:text-sm md:text-base max-w-[700px] mx-auto font-normal leading-relaxed text-center mb-10">
-            Have an idea, product, or workflow that could be smarter? <br className="hidden sm:block" />
-            Let’s turn it into something practical, scalable, and ready for the real world.
-          </p>
-
-          {/* CENTER CTA BUTTON */}
-          <div className="flex justify-center mb-16">
-            <a
-              href="mailto:abdulmannan.developer@gmail.com"
-              className="inline-flex items-center gap-3 bg-[#8E9B4D] hover:bg-[#9EAB5D] text-[#070C08] px-8 py-4 rounded-[6px] font-mono text-sm font-bold tracking-wider uppercase transition-all duration-300 hover:scale-105 shadow-lg shadow-[#8E9B4D]/10"
-            >
-              LET'S TALK <span className="text-lg">→</span>
-            </a>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-[1080px] mx-auto mb-16">
-            <a
-              href="mailto:abdulmannan.developer@gmail.com"
-              className="group flex items-center justify-between p-5 sm:p-6 rounded-[6px] bg-[#0C120D] border border-[#8E9B4D]/20 transition-all duration-300 hover:border-[#8E9B4D]/60 hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(142,155,77,0.1)]"
-            >
-              <div className="flex items-center gap-3.5 min-w-0">
-                <div className="w-10 h-10 rounded-[5px] bg-[#8E9B4D]/10 flex items-center justify-center text-[#8E9B4D] shrink-0">
-                  <FiMail className="w-5 h-5" />
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="font-mono text-[11px] text-[#8E9B4D] tracking-widest uppercase font-semibold">
-                    EMAIL
+              <Reveal className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 mb-12">
+                <a
+                  href="mailto:abdulmannan.developer@gmail.com"
+                  className="group inline-flex items-center gap-3 pl-2 pr-7 py-2 rounded-full bg-cream text-ink text-[15px] font-medium transition-colors duration-300 hover:bg-lime shrink-0 self-start"
+                >
+                  <span className="grid place-items-center w-10 h-10 rounded-full bg-ink text-lime overflow-hidden">
+                    <span className={ARROW_OUT}>&rarr;</span>
+                    <span className={ARROW_IN}>&rarr;</span>
                   </span>
-                  <span className="text-[clamp(0.8125rem,1.1vw,1rem)] font-medium text-[#E9E5DF] group-hover:text-[#8E9B4D] transition-colors mt-0.5 font-sans truncate sm:break-all md:break-normal">
-                    abdulmannan.developer@gmail.com
-                  </span>
-                </div>
-              </div>
-              <span className="text-xl font-mono text-[#8E9B4D] transition-transform duration-300 group-hover:translate-x-1.5 ml-2 shrink-0">
-                →
-              </span>
-            </a>
+                  Start a project
+                </a>
 
-            {/* LINKEDIN CARD */}
-            <a
-              href="https://www.linkedin.com/in/abdul-manan05"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between p-5 sm:p-6 rounded-[6px] bg-[#0C120D] border border-[#8E9B4D]/20 transition-all duration-300 hover:border-[#8E9B4D]/60 hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(142,155,77,0.1)]"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-[5px] bg-[#8E9B4D]/10 flex items-center justify-center text-[#8E9B4D] shrink-0">
-                  <FaLinkedinIn className="w-5 h-5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-mono text-[11px] text-[#8E9B4D] tracking-widest uppercase font-semibold">
-                    LINKEDIN
-                  </span>
-                  <span className="text-sm sm:text-base font-bold text-[#E9E5DF] group-hover:text-[#8E9B4D] transition-colors mt-0.5 font-sans">
-                    Let's Connect
-                  </span>
-                </div>
-              </div>
-              <span className="text-xl font-mono text-[#8E9B4D] transition-transform duration-300 group-hover:translate-x-1.5 ml-2">
-                →
-              </span>
-            </a>
+                <a
+                  href="mailto:abdulmannan.developer@gmail.com"
+                  className="link-underline text-cream text-[clamp(17px,2vw,30px)] font-display font-medium tracking-[-0.03em] self-start break-all sm:break-normal"
+                >
+                  abdulmannan.developer@gmail.com
+                </a>
+              </Reveal>
 
-            {/* GITHUB CARD */}
-            <a
-              href="https://github.com/MananAli05"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between p-5 sm:p-6 rounded-[6px] bg-[#0C120D] border border-[#8E9B4D]/20 transition-all duration-300 hover:border-[#8E9B4D]/60 hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(142,155,77,0.1)]"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-[5px] bg-[#8E9B4D]/10 flex items-center justify-center text-[#8E9B4D] shrink-0">
-                  <FaGithub className="w-5 h-5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-mono text-[11px] text-[#8E9B4D] tracking-widest uppercase font-semibold">
-                    GITHUB
-                  </span>
-                  <span className="text-sm sm:text-base font-bold text-[#E9E5DF] group-hover:text-[#8E9B4D] transition-colors mt-0.5 font-sans">
-                    Explore My Work
-                  </span>
-                </div>
-              </div>
-              <span className="text-xl font-mono text-[#8E9B4D] transition-transform duration-300 group-hover:translate-x-1.5 ml-2">
-                →
-              </span>
-            </a>
-
-          </div>
-
-          {/* BOTTOM FOOTER BAR */}
-          <div className="pt-8 border-t border-[#8E9B4D]/15 flex flex-col md:flex-row items-center justify-between gap-6">
-            
-            {/* LEFT: Portfolio Logo from /public */}
-            <div className="flex items-center">
-              <img
-                src="/logo.png"
-                alt="Abdul Manan"
-                className="h-7 w-auto object-contain filter drop-shadow-sm"
-              />
+              {/* Social buttons */}
+              <Reveal stagger className="flex items-center gap-3">
+                {SOCIALS.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    {...(href.startsWith('http')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                    aria-label={label}
+                    className="grid place-items-center w-12 h-12 rounded-full border border-cream/20 text-cream/80 transition-colors duration-300 hover:bg-lime hover:border-lime hover:text-ink"
+                  >
+                    <Icon className="w-[18px] h-[18px]" />
+                  </a>
+                ))}
+              </Reveal>
             </div>
 
-            {/* CENTER: Navigation Links */}
-            <div className="flex items-center gap-6 font-mono text-xs text-[#9EA298]">
-              <a
-                href="https://www.linkedin.com/in/abdul-manan05"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#8E9B4D] transition-colors uppercase tracking-wider"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://github.com/MananAli05"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#8E9B4D] transition-colors uppercase tracking-wider"
-              >
-                GitHub
-              </a>
+            {/* RIGHT: link columns */}
+            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-10">
+              <Reveal stagger className="flex flex-col gap-4">
+                {EXPLORE.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id, -110)}
+                    className="text-left text-cream/70 text-[16px] hover:text-lime transition-colors duration-300 w-fit cursor-pointer"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </Reveal>
+
+              <Reveal stagger className="flex flex-col gap-4">
+                {SOLUTIONS.map((label) => (
+                  <button
+                    key={label}
+                    onClick={() => scrollToSection('solutions', -110)}
+                    className="text-left text-cream/70 text-[16px] hover:text-lime transition-colors duration-300 w-fit cursor-pointer"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </Reveal>
+            </div>
+          </div>
+
+          {/* Bottom row */}
+          <div className="mt-20 pt-8 border-t border-cream/15 flex flex-col md:flex-row items-center justify-between gap-5">
+            <img src="/logo.png" alt="Abdul Manan" className="h-7 w-auto object-contain" />
+
+            <p className="font-mono text-[12px] text-cream/45 tracking-[0.08em] text-center">
+              AI &middot; Voice &middot; RAG &middot; Automation &middot; Backend
+            </p>
+
+            <div className="flex items-center gap-6">
               <a
                 href="/AbdulManan_Resume.pdf"
                 download="AbdulManan_Resume.pdf"
-                className="hover:text-[#8E9B4D] transition-colors uppercase tracking-wider"
+                className="font-mono text-[12px] text-cream/45 hover:text-lime transition-colors tracking-[0.08em]"
               >
                 Resume
               </a>
+              <p className="font-mono text-[12px] text-cream/45 tracking-[0.08em]">
+                &copy; 2026 Abdul Manan
+              </p>
             </div>
-
-            {/* RIGHT: Copyright Notice */}
-            <p className="font-mono text-xs text-[#9EA298]/80 tracking-wider">
-              © 2026 Abdul Manan
-            </p>
-
           </div>
+        </div>
 
+        {/* Giant faded wordmark */}
+        <div aria-hidden className="select-none pointer-events-none px-[2vw] pb-2">
+          <span className="block w-full text-center font-display font-extrabold leading-[0.8] tracking-[-0.05em] text-[clamp(60px,15.4vw,300px)] bg-gradient-to-b from-white/[0.16] to-white/[0.02] bg-clip-text text-transparent">
+            Abdul Manan
+          </span>
         </div>
       </footer>
 
-      {/* Floating Combined Chat & Voice AI Assistant Button */}
+      {/* Floating combined chat & voice AI assistant */}
       <FloatingAiWidget />
     </>
   );

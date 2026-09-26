@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import SplitHeading from './motion/SplitHeading';
+import Reveal from './motion/Reveal';
+import TimelineRail from './ui/TimelineRail';
 
-interface EducationItem {
+interface EducationEntry {
   id: string;
   year: string;
   degree: string;
@@ -10,7 +12,7 @@ interface EducationItem {
   cgpa?: string;
 }
 
-const EDUCATION_ENTRIES: EducationItem[] = [
+const EDUCATION: EducationEntry[] = [
   {
     id: 'kfueit',
     year: '2022 — 2026',
@@ -31,127 +33,67 @@ const EDUCATION_ENTRIES: EducationItem[] = [
 ];
 
 export default function Education() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
   return (
-    <section
-      id="education"
-      ref={sectionRef}
-      className="relative w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 bg-[#070C08] text-[#F3F3EE] overflow-hidden border-t border-[#8E9B4D]/15"
-    >
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(142,155,77,0.03)_0%,transparent_70%)] pointer-events-none -z-10" />
-
-      <div className="max-w-[1280px] mx-auto">
-        
-        {/* SECTION HEADER */}
-        <div
-          className={`flex flex-col items-center justify-center text-center mb-12 sm:mb-16 transition-all duration-1000 ease-out ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        > 
-
-          <h2 className="text-[clamp(2.125rem,4.5vw,3.75rem)] font-semibold leading-[0.96] tracking-[0.02em] text-[#E9E5DF] mb-3 font-sans text-center">
-            MY EDUCATION <br className="hidden sm:block" />
-            <span className="text-[#8E9B4D]">& ACADEMIC BACKGROUND</span>
-          </h2>
-
-          <p className="text-[#E9E5DF]/80 text-xs sm:text-sm md:text-base max-w-[650px] mx-auto font-normal leading-relaxed text-center">
-            Academic foundations in data, engineering, and problem-solving that shaped how I build intelligent systems today.
-          </p>
+    <section id="education" className="relative w-full bg-cream py-24 md:py-32 lg:py-40">
+      <div className="shell">
+        <div className="max-w-[900px] mb-16 md:mb-20">
+          <Reveal className="eyebrow mb-7">Education</Reveal>
+          <SplitHeading className="title-xl">
+            <span className="block text-ink">Foundation &amp;</span>
+            <span className="block text-faint">academic background.</span>
+          </SplitHeading>
         </div>
 
-        {/* VERTICAL TIMELINE CONTAINER (MATCHING EXPERIENCE SECTION STYLE) */}
-        <div className="max-w-[960px] mx-auto relative">
-          
-          {/* Vertical Timeline Line */}
-          <div className="absolute left-[15px] sm:left-[19px] top-3 bottom-3 w-[2px] bg-[#8E9B4D]/35 pointer-events-none" />
+        <div id="education-rail" className="relative pl-9 sm:pl-16">
+          <TimelineRail containerId="education-rail" />
 
-          <div className="flex flex-col space-y-10 sm:space-y-12">
-            {EDUCATION_ENTRIES.map((entry, idx) => (
-              <div
-                key={entry.id}
-                className={`relative flex items-start pl-10 sm:pl-14 transition-all duration-700 ease-out group ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${idx * 150}ms` }}
-              >
-                {/* Circular Timeline Node */}
-                <div className="absolute left-0 top-6 sm:top-7 w-8 h-8 flex items-center justify-center -translate-x-[1px]">
-                  <div className="w-3.5 h-3.5 rounded-full bg-[#8E9B4D] border-2 border-[#070C08] shadow-[0_0_8px_rgba(142,155,77,0.4)] group-hover:scale-125 transition-transform duration-300" />
-                </div>
+          <div className="flex flex-col gap-5 lg:gap-6">
+            {EDUCATION.map((entry) => (
+              <Reveal key={entry.id}>
+                <div className="relative">
+                  <span
+                    aria-hidden
+                    className="absolute -left-9 sm:-left-16 top-10 w-4 h-4 rounded-full bg-cream border-[3px] border-lime translate-x-[-1px] sm:translate-x-[3px]"
+                  />
 
-                {/* Flat Minimal Rectangular Panel (#E9E5DF surface matching Experience section) */}
-                <div className="w-full p-6 sm:p-8 rounded-[10px] bg-[#E9E5DF] text-[#11140F] border border-[#D6D2CA] transition-all duration-350 ease-out hover:-translate-y-1 hover:border-[#8E9B4D] hover:shadow-lg hover:shadow-black/20">
-                  
-                  {/* Top Row: Institution Logo (Left) & Date Range (Right) */}
-                  <div className="flex items-center justify-between gap-4 mb-4 pb-4 border-b border-[#11140F]/10">
-                    <div className="h-10 sm:h-12 flex items-center justify-start">
+                  <article className="card-surface lift p-8 md:p-10">
+                    <div className="flex items-center justify-between gap-5 mb-7 pb-7 border-b border-line">
                       <img
                         src={entry.logo}
                         alt={entry.institution}
-                        className="h-full w-auto max-w-[140px] object-contain filter drop-shadow-sm"
+                        className="h-11 sm:h-12 w-auto object-contain"
+                        loading="lazy"
                       />
-                    </div>
-                    <span className="font-mono text-xs uppercase tracking-wider font-bold text-[#6F7B36] shrink-0">
-                      {entry.year}
-                    </span>
-                  </div>
-
-                  {/* Degree Title */}
-                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#11140F] mb-1 font-sans">
-                    {entry.degree}
-                  </h3>
-
-                  {/* Institution Name */}
-                  <p className="text-sm sm:text-base font-semibold text-[#383D34] mb-1 font-sans">
-                    {entry.institution}
-                  </p>
-
-                  {/* Location */}
-                  <p className="font-mono text-xs text-[#52584D]">
-                    {entry.location}
-                  </p>
-
-                  {/* CGPA Detail (if applicable) */}
-                  {entry.cgpa && (
-                    <div className="mt-4 pt-3 border-t border-[#11140F]/10 flex items-center justify-end">
-                      <span className="font-mono text-xs font-bold text-[#6F7B36]">
-                        CGPA {entry.cgpa}
+                      <span className="font-mono text-[12px] tracking-[0.06em] text-deeplime whitespace-nowrap">
+                        {entry.year}
                       </span>
                     </div>
-                  )}
 
+                    <h3 className="font-display font-bold text-ink text-[clamp(22px,1.9vw,32px)] tracking-[-0.04em] leading-[1.1] mb-3">
+                      {entry.degree}
+                    </h3>
+
+                    <p className="text-body text-[15px] md:text-[16px] leading-[1.6] max-w-[60ch]">
+                      {entry.institution}
+                    </p>
+                    <p className="text-faint text-[14px] mt-2">{entry.location}</p>
+
+                    {entry.cgpa && (
+                      <div className="mt-7 pt-6 border-t border-line flex items-center gap-3">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+                          CGPA
+                        </span>
+                        <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-lime text-ink font-mono text-[13px] font-medium">
+                          {entry.cgpa}
+                        </span>
+                      </div>
+                    )}
+                  </article>
                 </div>
-
-              </div>
+              </Reveal>
             ))}
           </div>
-
         </div>
-
       </div>
     </section>
   );
