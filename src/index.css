@@ -156,6 +156,30 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* Fine film grain over flat cream — reads as paper rather than screen.
+     Kept very low opacity so it is felt, not seen. */
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
+  }
+
+  /* Seamless marquee: the track holds two copies, so travelling exactly
+     half its width lands back on an identical frame. */
+  .marquee-track {
+    animation: marquee-scroll 42s linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+
   /* Animated underline for large links */
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
@@ -197,4 +221,5 @@
   html.motion-ready [data-split] { visibility: visible !important; }
 
   .lift:hover { transform: none; }
+  .marquee-track { animation: none !important; }
 }
