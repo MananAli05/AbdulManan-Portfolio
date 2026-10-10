@@ -46,7 +46,7 @@ export default function TechMarquee() {
                 <span className="font-mono text-[12px] sm:text-[13px] uppercase tracking-[0.16em] text-faint whitespace-nowrap">
                   {name}
                 </span>
-                <span aria-hidden className="w-1 h-1 rounded-full bg-lime shrink-0" />
+                <span aria-hidden className="w-1 h-1 rounded-full bg-ink/20 shrink-0" />
               </li>
             ))}
           </ul>
