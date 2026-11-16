@@ -4,18 +4,11 @@ import { gsap, prefersReducedMotion, EASE } from '../../lib/motion';
 interface RevealProps {
   children: ReactNode;
   className?: string;
-  /** Stagger direct children instead of animating the wrapper as one block. */
   stagger?: boolean;
   delay?: number;
-  /** Vertical travel in px. */
   y?: number;
 }
 
-/**
- * Fades content in with a small rise and a blur-to-sharp pass as it
- * enters the viewport. With `stagger` the wrapper's direct children
- * animate in sequence.
- */
 export default function Reveal({
   children,
   className = '',

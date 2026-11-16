@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import MotionProvider from './components/motion/MotionProvider';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Expertise from './components/Expertise';
-import TechStack from './components/TechStack';
-import Projects from './components/Projects';
-import Experience from './components/Experience';
-import Education from './components/Education';
-import ContactSection from './components/ContactSection';
-import Footer from './components/Footer';
-import SocialSidebar from './components/SocialSidebar';
-import MedicareCaseStudy from './components/MedicareCaseStudy';
+import Navbar from './components/layout/Navbar';
+import Hero from './components/sections/Hero';
+import Bento from './components/sections/Bento';
+import About from './components/sections/About';
+import Services from './components/sections/Services';
+import Projects from './components/sections/Projects';
+import Experience from './components/sections/Experience';
+import Contact from './components/sections/Contact';
+import Footer from './components/layout/Footer';
+import SocialSidebar from './components/layout/SocialSidebar';
+import CaseStudyPage from './components/case-study/CaseStudyPage';
+import { CASE_STUDIES } from './data/case-studies';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(window.location.pathname);
@@ -25,14 +25,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  const isMedicareCaseStudy =
-    currentPath === '/projects/medicare' || currentPath === '/projects/medicare/';
+  const slug = currentPath.match(/^\/projects\/([^/]+)\/?$/)?.[1];
+  const study = slug ? CASE_STUDIES[slug] : undefined;
 
-  if (isMedicareCaseStudy) {
+  if (study) {
     return (
       <>
         <MotionProvider />
-        <MedicareCaseStudy />
+        <CaseStudyPage key={study.slug} study={study} />
       </>
     );
   }
@@ -44,13 +44,12 @@ export default function App() {
       <SocialSidebar />
       <main>
         <Hero />
+        <Bento />
         <About />
-        <Expertise />
-        <TechStack />
         <Projects />
+        <Services />
         <Experience />
-        <Education />
-        <ContactSection />
+        <Contact />
       </main>
       <Footer />
     </>

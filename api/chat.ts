@@ -4,22 +4,30 @@ import Groq from 'groq-sdk';
 const PORTFOLIO_KNOWLEDGE = {
   profile: {
     name: 'Abdul Manan',
-    role: 'AI Engineer',
+    role: 'Full Stack & AI Engineer',
     focus:
-      'AI-powered applications, LLM systems, RAG systems, voice AI agents, computer vision, backend development and intelligent automation.',
+      'Web apps (Next.js, React), Flutter mobile apps and AI agents: chatbots, voice agents, LLM and RAG systems, computer vision and n8n automation.',
+    location: 'Rahim Yar Khan, Pakistan. Works remotely with clients worldwide.',
+    availability: 'Available for new projects.',
   },
+  services: [
+    'Mobile apps built with Flutter',
+    'Web apps, dashboards and admin panels built with Next.js and React',
+    'AI chat agents that answer from an approved knowledge base',
+    'Voice AI agents for inbound and outbound calls',
+    'Workflow automation with n8n',
+  ],
   experience: [
     {
       company: 'CodAgentic',
-      role: 'Junior AI Engineer',
+      role: 'Full Stack & AI Engineer',
       location: 'Remote',
       period: 'April 2026 – Present',
       work: [
-        'Contributes to AI-powered web applications.',
-        'Develops backend services and REST APIs using FastAPI.',
-        'Works with Supabase for backend and database services.',
-        'Builds frontend functionality using React and TypeScript.',
-        'Works on debugging, testing and production-ready AI applications.',
+        'Builds features across AI-powered web applications, backend and frontend.',
+        'Develops REST APIs with FastAPI on Supabase.',
+        'Builds interfaces with React and TypeScript.',
+        'Takes part in code reviews, API and UI testing, and production releases.',
       ],
     },
     {
@@ -39,6 +47,7 @@ const PORTFOLIO_KNOWLEDGE = {
     {
       title: 'Sage & Salt',
       type: 'AI-powered restaurant management and ordering system.',
+      status: 'Live demo at https://sage-and-salt.vercel.app/',
       capabilities: [
         'Voice AI phone ordering',
         'WhatsApp automation',
@@ -47,46 +56,99 @@ const PORTFOLIO_KNOWLEDGE = {
         'Order management',
         'Real-time analytics',
       ],
-      technologies: [
-        'React',
-        'FastAPI',
-        'Python',
-        'Supabase',
-        'Twilio',
-        'ElevenLabs/Voice AI integrations',
-      ],
+      technologies: ['React', 'Vite', 'Firebase', 'Twilio', 'Groq', 'ElevenLabs'],
+      links: 'Code: https://github.com/MananAli05/Sage-and-Salt',
     },
     {
-      title: 'Multilingual AI Healthcare',
-      type: 'AI-powered multilingual healthcare assistant.',
+      title: 'Truck Bhai',
+      type: 'Truck booking app for Bangladesh. Client project: mobile app, admin panel and API.',
+      status: 'In testing on real phones. Launch planned for December 2026.',
+      summary:
+        'Shippers post a load, nearby verified drivers send a price, the shipper picks one, and the trip is tracked from pickup to delivery. Built for low-literacy users: real photos on every choice, big clear buttons, and full English and Bangla.',
       capabilities: [
-        'AI symptom checker with voice input',
-        'X-ray analysis',
-        'Pneumonia detection',
-        'Lab report analysis',
-        'OCR',
-        'English and Urdu support',
-        'Emergency assistance',
-        'Activity/history tracking',
+        'Phone login with SMS code and a 6-digit PIN',
+        'KYC with NID card scan, driving licence, selfie and truck photos',
+        'Truck photo checked against the typed number plate',
+        'Post a load in 6 steps with places on Google Maps',
+        'Fair price suggested from the real road distance',
+        'Pickup code, delivery code and delivery photo for each trip',
+        'Live trip map with route and arrival time',
+        'Push alerts, ratings, trip problems and a driver earnings screen',
+        'Admin panel for KYC review, truck approval, trips, problems and blocking users',
       ],
       technologies: [
         'Flutter',
-        'Dart',
-        'Python',
-        'TensorFlow Lite',
-        'CNN',
-        'Google ML Kit OCR',
-        'Groq',
-        'Firebase',
-        'REST APIs',
+        'Riverpod',
+        'Node.js',
+        'Hono',
+        'TypeScript',
+        'Supabase',
+        'Firebase Auth and Cloud Messaging',
+        'Google Maps, Places and Routes APIs',
+        'Google ML Kit',
+        'Google Cloud Vision',
+        'Google Cloud Run',
+        'React admin panel',
       ],
+      links: 'The code is private because it is a client project.',
+    },
+    {
+      title: 'Etihad Garden',
+      type: 'AI sales assistant and CRM for a Pakistani housing society. Personal project, solo build.',
+      status: 'Live at https://etihad-agent.vercel.app/',
+      summary:
+        'Sara, a bilingual (Roman Urdu and English) chat and voice assistant, answers buyers on the website and turns conversations into leads in a custom CRM.',
+      capabilities: [
+        'Sara chatbot that answers only from an approved knowledge base',
+        'Sara voice assistant with real-time calls in the browser through ElevenLabs',
+        'Outbound calling agent run by an n8n workflow',
+        'Inquiry form with Pakistani phone validation',
+        'Admin CRM with KPI cards, lead pipeline, Hot/Warm/Cold interest, calls, follow-ups and site visits',
+        'One lead record from five channels, matched by phone number',
+        'Lead details extracted from conversations with a second LLM call',
+      ],
+      technologies: ['React', 'Vite', 'Tailwind CSS', 'FastAPI', 'Python', 'Groq', 'ElevenLabs', 'Supabase', 'n8n', 'Vercel'],
+      links: 'Code: https://github.com/MananAli05/Etihad-Agent',
+    },
+    {
+      title: 'Premium Store',
+      type: 'Chat-based store for digital subscriptions in Pakistan. Solo build.',
+      status: 'Live at https://premiumstore.online/ and used daily by a real business.',
+      summary:
+        'Customers buy digital subscriptions through a chatbot, pay with JazzCash, Easypaisa, NayaPay or a bank transfer, and upload a screenshot of the payment. The owner approves it from a web admin panel or a Flutter admin app, and the code arrives in the same chat.',
+      numbers: '2,300+ customers. About 360 completed orders per week, with 84 orders on the busiest day.',
+      capabilities: [
+        'Guided chat checkout with buttons instead of typing',
+        'Payment proof upload in the chat',
+        'Web admin panel with live counts, a weekly orders chart and an inbox of every chat',
+        'Flutter Android admin app with instant push notifications and quick approve or reject',
+        'Works on old and low-end phones and browsers',
+        'Orders expire on the server if they are not paid in time',
+      ],
+      technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Flutter', 'Supabase', 'Firebase Cloud Messaging', 'Cloudinary', 'Cloudflare Workers', 'Playwright'],
+      links: 'The code is private because it is a client project.',
+    },
+    {
+      title: 'Multilingual AI Healthcare (MediCare)',
+      type: 'AI-powered multilingual healthcare assistant, a Flutter mobile app.',
+      summary:
+        'An AI-assisted screening project in English and Urdu. It is not intended to replace a professional medical diagnosis.',
+      capabilities: [
+        'AI symptom checker with voice input and severity questions',
+        'Chest X-ray analysis for pneumonia with a confidence score',
+        'Lab report reading with OCR, with each value marked Normal, Low or High',
+        'English and Urdu support, including spoken Urdu results',
+        'Emergency assistance',
+        'Activity and history tracking',
+      ],
+      technologies: ['Flutter', 'Dart', 'Python', 'FastAPI', 'TensorFlow', 'scikit-learn', 'EasyOCR', 'Groq Whisper', 'LLaMA 3.3 70B', 'Supabase', 'Firebase Auth'],
+      links: 'Code: https://github.com/MananAli05/Multilingual-AI-Healthcare',
     },
   ],
   education: [
     {
       degree: 'Bachelor in Data Science',
-      institution:
-        'Khwaja Fareed University of Engineering and Information Technology',
+      institution: 'Khwaja Fareed University of Engineering and Information Technology',
       location: 'Rahim Yar Khan, Pakistan',
       period: '2022 – 2026',
       cgpa: '3.56 / 4.00',
@@ -99,18 +161,20 @@ const PORTFOLIO_KNOWLEDGE = {
     },
   ],
   technicalSkills: {
+    mobile: ['Flutter', 'Dart'],
+    frontend: ['Next.js', 'React', 'TypeScript', 'JavaScript', 'Tailwind CSS'],
+    backend: ['FastAPI', 'Django', 'Django REST Framework', 'Node.js', 'Hono', 'REST APIs'],
     aiMl: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-Learn', 'OpenCV'],
     llmAi: ['Groq', 'LangChain', 'Hugging Face', 'RAG', 'LLM applications'],
-    backend: ['FastAPI', 'Django', 'Django REST Framework', 'REST APIs'],
-    data: ['PostgreSQL', 'Supabase'],
-    frontend: ['React', 'TypeScript', 'JavaScript', 'Tailwind CSS'],
+    voiceAndAutomation: ['ElevenLabs', 'Twilio', 'n8n'],
+    data: ['PostgreSQL', 'Supabase', 'Firebase'],
     tools: ['Git', 'GitHub', 'Docker'],
   },
   contact: {
     email: 'abdulmannan.developer@gmail.com',
     gitHub: 'https://github.com/MananAli05',
     linkedIn: 'https://www.linkedin.com/in/abdul-manan05',
-    resume: '/public/AbdulMananResume.pdf',
+    resume: '/AbdulManan_Resume.pdf',
   },
 };
 
@@ -156,7 +220,6 @@ interface InputMessage {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  console.log('[Chat API] Handler started');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -169,8 +232,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('[Chat API] GROQ_API_KEY missing');
       return res.status(500).json({ error: 'Chat service configuration error' });
     }
-
-    console.log('[Chat API] Environment validated');
 
     let body = req.body;
     if (typeof body === 'string') {
@@ -208,11 +269,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       { role: 'system' as const, content: SYSTEM_PROMPT },
       ...sanitizedMessages,
     ];
-
-    console.log('[Chat API] Initializing Groq client');
     const groq = new Groq({ apiKey });
-
-    console.log('[Chat API] Sending request to Groq model openai/gpt-oss-120b');
     const completion = await groq.chat.completions.create({
       messages: fullConversation,
       model: 'openai/gpt-oss-120b',
@@ -221,8 +278,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     const reply = completion.choices[0]?.message?.content || 'I could not generate a response at this time.';
-
-    console.log('[Chat API] Groq response received');
     return res.status(200).json({ reply });
   } catch (error: unknown) {
     console.error(

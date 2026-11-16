@@ -11,5 +11,5 @@ coverage/
 !.env.example
 
 
-# local design reference (81MB)
-public/referencevideo.mp4
+# local design reference (video, original uncompressed images); not part of the site
+reference/

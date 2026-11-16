@@ -4,13 +4,16 @@ import { gsap, SplitText, prefersReducedMotion } from '../../lib/motion';
 interface WordLightProps {
   text: string;
   className?: string;
+  from?: string;
+  to?: string;
 }
 
-/**
- * A long paragraph whose words brighten from faint grey to full ink as
- * the passage scrolls through the viewport.
- */
-export default function WordLight({ text, className = '' }: WordLightProps) {
+export default function WordLight({
+  text,
+  className = '',
+  from = '#C9C7BB',
+  to = '#10130C',
+}: WordLightProps) {
   const ref = useRef<HTMLParagraphElement>(null);
 
   useLayoutEffect(() => {
@@ -23,9 +26,9 @@ export default function WordLight({ text, className = '' }: WordLightProps) {
 
         gsap.fromTo(
           split.words,
-          { color: '#C9C7BB' },
+          { color: from },
           {
-            color: '#10130C',
+            color: to,
             duration: 1,
             stagger: 0.35,
             ease: 'none',
@@ -44,7 +47,7 @@ export default function WordLight({ text, className = '' }: WordLightProps) {
     }, el);
 
     return () => ctx.revert();
-  }, [text]);
+  }, [text, from, to]);
 
   return (
     <p ref={ref} className={className}>

@@ -3,16 +3,18 @@ import { gsap, prefersReducedMotion } from '../../lib/motion';
 
 interface CountUpProps {
   value: number;
-  /** Zero-pad to this width, e.g. 2 renders 1 as "01". */
   pad?: number;
+  group?: boolean;
   className?: string;
 }
 
-/** Counts from zero to `value` the first time it scrolls into view. */
-export default function CountUp({ value, pad = 0, className = '' }: CountUpProps) {
+export default function CountUp({ value, pad = 0, group = false, className = '' }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
 
-  const format = (n: number) => String(Math.round(n)).padStart(pad, '0');
+  const format = (n: number) =>
+    group
+      ? Math.round(n).toLocaleString('en-US')
+      : String(Math.round(n)).padStart(pad, '0');
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -37,8 +39,7 @@ export default function CountUp({ value, pad = 0, className = '' }: CountUpProps
     }, el);
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, pad]);
+  }, [value, pad, group]);
 
   return (
     <span ref={ref} className={className}>

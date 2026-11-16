@@ -6,23 +6,19 @@ import multer from 'multer';
 import path from 'path';
 import { mananKnowledge } from '../lib/mananKnowledge';
 
-// Load environment variables from .env.local first, fallback to .env
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Multer memory storage configuration for 10MB voice notes
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-// Build authoritative JSON knowledge context
 const portfolioContext = JSON.stringify(mananKnowledge, null, 2);
 
-// Single authoritative system instruction with embedded portfolio knowledge
 const systemPrompt = `
 You are Manan AI, the portfolio assistant for Abdul Manan.
 
@@ -82,8 +78,7 @@ interface InputMessage {
 app.use(cors());
 app.use(express.json());
 
-// GET / health check route for browser confirmation
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.json({
     status: 'online',
     message: 'MANAN AI Local API Development Server is running.',
@@ -92,15 +87,13 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// GET /api/chat info route
-app.get('/api/chat', (req: Request, res: Response) => {
+app.get('/api/chat', (_req: Request, res: Response) => {
   res.json({
     status: 'online',
     message: 'Send a POST request with { messages: [...] } to chat with MANAN AI.',
   });
 });
 
-// POST /api/transcribe local endpoint
 app.post('/api/transcribe', upload.single('file'), async (req: Request, res: Response) => {
   const apiKey = process.env.GROQ_API_KEY;
 
@@ -145,8 +138,7 @@ app.post('/api/transcribe', upload.single('file'), async (req: Request, res: Res
   }
 });
 
-// POST /api/retell-call local endpoint for Retell Web Call access token creation
-app.post('/api/retell-call', async (req: Request, res: Response) => {
+app.post('/api/retell-call', async (_req: Request, res: Response) => {
   const apiKey = process.env.RETELL_API_KEY;
   const agentId = process.env.RETELL_AGENT_ID;
 
@@ -190,7 +182,6 @@ app.post('/api/retell-call', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/chat local endpoint matching production Vercel logic
 app.post('/api/chat', async (req: Request, res: Response) => {
   const apiKey = process.env.GROQ_API_KEY;
 
@@ -217,7 +208,6 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid request: No valid message content provided.' });
     }
 
-    // System prompt MUST be the first message sent to Groq
     const fullConversation = [
       { role: 'system' as const, content: systemPrompt },
       ...sanitizedMessages,

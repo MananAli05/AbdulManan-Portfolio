@@ -5,15 +5,10 @@ interface SplitHeadingProps {
   children: ReactNode;
   as?: ElementType;
   className?: string;
-  /** Play immediately on mount instead of waiting for the element to scroll in. */
   immediate?: boolean;
   delay?: number;
 }
 
-/**
- * Reveals a heading line by line: each line sits in a mask and slides up.
- * Falls back to plain rendered text when motion is reduced.
- */
 export default function SplitHeading({
   children,
   as: Tag = 'h2',
@@ -33,7 +28,6 @@ export default function SplitHeading({
     }
 
     const ctx = gsap.context(() => {
-      // Wait for webfonts so line breaks are measured against the real face.
       const run = () => {
         const split = new SplitText(el, {
           type: 'lines',

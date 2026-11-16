@@ -2,7 +2,6 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Groq, { toFile } from 'groq-sdk';
 import multer from 'multer';
 
-// Disable default body parser so multer can parse incoming multipart stream
 export const config = {
   api: {
     bodyParser: false,
@@ -11,7 +10,7 @@ export const config = {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit for short voice notes
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 function runMiddleware(req: VercelRequest, res: VercelResponse, fn: Function) {
@@ -37,7 +36,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Process multipart/form-data audio upload
     await runMiddleware(req, res, upload.single('file'));
 
     const file = (req as any).file;

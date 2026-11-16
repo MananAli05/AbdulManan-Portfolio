@@ -1,37 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-/* ============================================================
-   THEME TOKENS
-   ============================================================ */
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.woff") format("woff");
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  /* Surfaces */
   --color-cream: #FBFAF5;
   --color-card: #FFFFFF;
   --color-ink: #10130C;
 
-  /* Accent */
-  --color-lime: #C5E063;
+  --color-night: #0E0E0E;
+  --color-bone: #F2EFE8;
+
+  --color-lime: #C8F04B;
   --color-deeplime: #5E7D12;
 
-  /* Text */
   --color-body: #5A5F50;
   --color-faint: #8E9183;
 
-  /* Structure */
   --color-line: #E9E7DE;
   --color-alert: #E03E2D;
 
-  /* Typography */
-  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Neue Montreal", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Neue Montreal", "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
 
-  /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Shell metrics used outside Tailwind utilities */
 :root {
   --shell-max: 1760px;
   --shell-pad: clamp(20px, 3.3vw, 64px);
@@ -40,11 +57,9 @@
   --shadow-card-hover: 0 2px 4px rgba(16, 19, 12, 0.05), 0 28px 56px -16px rgba(16, 19, 12, 0.16);
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
 @layer base {
   html {
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -62,7 +77,7 @@
     font-family: var(--font-display);
     color: var(--color-ink);
     font-weight: 700;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.025em;
     line-height: 0.96;
     text-wrap: balance;
   }
@@ -77,9 +92,6 @@
   }
 }
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
 @layer components {
   .shell {
     width: 100%;
@@ -88,10 +100,14 @@
     padding-inline: var(--shell-pad);
   }
 
-  /* Fluid section title — fills large screens, stays sane on phones */
   .title-xl {
     font-size: clamp(40px, 6vw, 110px);
     line-height: 0.94;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 4.7vw, 80px);
+    line-height: 1.02;
   }
 
   .title-lg {
@@ -116,13 +132,7 @@
   }
 }
 
-/* ============================================================
-   MOTION PRIMITIVES
-   ============================================================ */
 @layer utilities {
-  /* Elements GSAP will reveal start hidden so there is no flash before
-     ScrollTrigger takes over. .motion-ready is set on <html> once the
-     animation layer has mounted; without JS everything stays visible. */
   html.motion-ready [data-reveal] {
     opacity: 0;
   }
@@ -131,10 +141,6 @@
     visibility: hidden;
   }
 
-  /* GSAP SplitText masks each line with overflow:clip, which cuts the
-     descenders off tight-leading display type (g, y, p). Pad the line
-     so the mask box includes them, then pull the mask back up so the
-     leading is unchanged. */
   .split-line {
     padding-bottom: 0.18em;
   }
@@ -156,8 +162,6 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* Fine film grain over flat cream — reads as paper rather than screen.
-     Kept very low opacity so it is felt, not seen. */
   .grain::before {
     content: '';
     position: absolute;
@@ -169,8 +173,6 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
   }
 
-  /* Seamless marquee: the track holds two copies, so travelling exactly
-     half its width lands back on an identical frame. */
   .marquee-track {
     animation: marquee-scroll 42s linear infinite;
   }
@@ -180,7 +182,6 @@
     to { transform: translate3d(-50%, 0, 0); }
   }
 
-  /* Animated underline for large links */
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1.5px;
@@ -194,9 +195,58 @@
   }
 }
 
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
+.hero-mark {
+  display: inline-block;
+  padding: 0 0.16em 0.06em;
+  border-radius: 0.14em;
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.robot-mascot {
+  overflow: visible;
+  will-change: transform;
+  animation: robot-bob 3.6s ease-in-out infinite;
+}
+
+.robot-head {
+  transform-origin: 60px 104px;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.group:hover .robot-head {
+  transform: rotate(-7deg);
+}
+
+.robot-eyes {
+  transition: transform 0.18s ease-out;
+}
+
+.robot-blink {
+  transform-origin: 60px 62.5px;
+  animation: robot-blink 4.4s infinite;
+}
+
+.mascot-antenna {
+  transform-origin: 60px 32px;
+  animation: mascot-sway 3s ease-in-out infinite;
+}
+
+@keyframes mascot-sway {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(9deg); }
+}
+
+@keyframes robot-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes robot-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-cream); }
 ::-webkit-scrollbar-thumb {
@@ -206,9 +256,6 @@
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-faint); }
 
-/* ============================================================
-   REDUCED MOTION — show everything, move nothing
-   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

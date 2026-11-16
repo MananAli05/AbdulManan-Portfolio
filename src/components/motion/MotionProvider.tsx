@@ -2,11 +2,6 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/motion';
 
-/**
- * Drives Lenis smooth scrolling and keeps ScrollTrigger in step with it.
- * Mounted once at the app root. With reduced motion requested it does
- * nothing at all, leaving the browser's own scrolling in place.
- */
 export default function MotionProvider() {
   useEffect(() => {
     if (prefersReducedMotion()) {
@@ -21,7 +16,6 @@ export default function MotionProvider() {
       touchMultiplier: 1.6,
     });
 
-    // Let Lenis own the scroll loop; ScrollTrigger reads from it.
     lenis.on('scroll', ScrollTrigger.update);
 
     const tick = (time: number) => lenis.raf(time * 1000);
@@ -30,8 +24,6 @@ export default function MotionProvider() {
 
     document.documentElement.classList.add('motion-ready');
 
-    // Anchor buttons dispatch this instead of window.scrollTo so the
-    // smooth-scroll engine stays the single source of truth.
     const handleScrollTo = (event: Event) => {
       const { target, offset } = (event as CustomEvent<{ target: string; offset?: number }>).detail;
       const el = document.getElementById(target);
@@ -39,8 +31,15 @@ export default function MotionProvider() {
     };
     window.addEventListener('lenis:scroll-to', handleScrollTo);
 
+    const handleScrollTop = (event: Event) => {
+      const { top, duration } = (event as CustomEvent<{ top: number; duration?: number }>).detail;
+      lenis.scrollTo(top, { duration: duration ?? 0.9, force: true });
+    };
+    window.addEventListener('lenis:scroll-top', handleScrollTop);
+
     return () => {
       window.removeEventListener('lenis:scroll-to', handleScrollTo);
+      window.removeEventListener('lenis:scroll-top', handleScrollTop);
       gsap.ticker.remove(tick);
       lenis.destroy();
       document.documentElement.classList.remove('motion-ready');
@@ -50,7 +49,6 @@ export default function MotionProvider() {
   return null;
 }
 
-/** Scroll helper that works whether or not Lenis is running. */
 export function scrollToSection(id: string, offset = -90) {
   if (prefersReducedMotion() || !document.documentElement.classList.contains('motion-ready')) {
     const el = document.getElementById(id);
