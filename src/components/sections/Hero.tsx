@@ -63,7 +63,7 @@ export default function Hero() {
         <div className="relative w-full max-w-[640px]">
           <p
             data-hero-fade
-            className="text-bone/65 text-[15px] md:text-[17px] leading-[1.6] mb-9"
+            className="text-bone/65 text-[15px] md:text-[16px] leading-[1.6] mb-8"
           >
             Full stack developer building web apps, Flutter mobile apps and AI agents
             (chatbots, voice agents and automation) that run for real businesses. Ask my
@@ -73,7 +73,7 @@ export default function Hero() {
           <div data-hero-fade className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => scrollToSection('projects', -92)}
-              className="group inline-flex items-center gap-3 h-[54px] px-7 rounded-[6px] bg-lime text-ink text-[13px] font-semibold uppercase tracking-[0.04em] transition-all duration-300 hover:brightness-95 cursor-pointer"
+              className="group inline-flex items-center gap-3 h-[50px] px-6 rounded-[6px] bg-lime text-ink text-[13px] font-semibold uppercase tracking-[0.04em] transition-all duration-300 hover:brightness-95 cursor-pointer"
             >
               Explore my work
               <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
@@ -83,7 +83,7 @@ export default function Hero() {
             <a
               href={RESUME_URL}
               download={RESUME_FILE}
-              className="group inline-flex items-center gap-3 h-[54px] px-7 rounded-[6px] border border-lime/30 text-bone text-[13px] font-semibold uppercase tracking-[0.04em] transition-colors duration-300 hover:border-lime/70"
+              className="group inline-flex items-center gap-3 h-[50px] px-6 rounded-[6px] border border-lime/30 text-bone text-[13px] font-semibold uppercase tracking-[0.04em] transition-colors duration-300 hover:border-lime/70"
             >
               Resume
               <span

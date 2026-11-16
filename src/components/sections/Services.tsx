@@ -19,7 +19,7 @@ function ServiceBody({ service }: { service: Service }) {
           {service.points.map((point) => (
             <li
               key={point}
-              className="flex items-center justify-between gap-4 py-3 border-b border-ink/12 text-[14px] font-medium text-ink"
+              className="flex items-center justify-between gap-4 py-2.5 border-b border-ink/12 text-[14px] font-medium text-ink"
             >
               {point}
               <span aria-hidden className="w-2 h-2 rounded-full bg-lime ring-1 ring-ink/20 shrink-0" />
@@ -78,7 +78,7 @@ export default function Services() {
     <section
       id="services"
       ref={rootRef}
-      className="relative w-full bg-night text-bone rounded-[32px] md:rounded-[48px] py-20 md:py-24 overflow-hidden"
+      className="relative w-full bg-night text-bone rounded-[32px] md:rounded-[48px] py-16 md:py-20 overflow-hidden"
     >
       <div
         aria-hidden
@@ -90,8 +90,8 @@ export default function Services() {
       />
 
       <div className="shell relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-9 md:mb-11">
-          <SplitHeading className="lg:col-span-7 text-[clamp(30px,3.5vw,58px)] leading-[1]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-8 md:mb-9">
+          <SplitHeading className="lg:col-span-7 text-[clamp(28px,3.3vw,54px)] leading-[1]">
             <span className="block text-bone">What I can</span>
             <span className="block text-bone">
               <span className="hero-mark">build for you.</span>
@@ -105,7 +105,7 @@ export default function Services() {
           </Reveal>
         </div>
 
-        <div data-services className="hidden lg:flex gap-3 h-[clamp(430px,calc(100svh-350px),500px)]">
+        <div data-services className="hidden lg:flex gap-3 h-[clamp(390px,calc(100svh-300px),470px)]">
           {SERVICES.map((service, i) => {
             const open = i === active;
             return (
@@ -139,13 +139,13 @@ export default function Services() {
                 <div
                   id={`service-panel-${service.id}`}
                   inert={!open}
-                  className={`absolute inset-0 flex flex-col justify-between gap-5 p-8 xl:p-9 text-ink transition-opacity ${
+                  className={`absolute inset-0 flex flex-col justify-between gap-4 p-7 xl:p-8 text-ink transition-opacity ${
                     open ? 'opacity-100 duration-500 delay-300' : 'opacity-0 duration-150 pointer-events-none'
                   }`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-6">
-                      <h3 className="text-ink text-[clamp(30px,3vw,46px)] leading-[0.98] tracking-[-0.025em]">
+                      <h3 className="text-ink text-[clamp(26px,2.5vw,40px)] leading-[0.98] tracking-[-0.025em]">
                         {service.title}
                       </h3>
                       <span className="font-mono text-[12px] tracking-[0.1em] text-deeplime whitespace-nowrap pt-2">

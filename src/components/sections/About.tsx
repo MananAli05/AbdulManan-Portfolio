@@ -56,7 +56,7 @@ export default function About() {
     <section
       id="about"
       ref={rootRef}
-      className="relative w-full bg-night text-bone rounded-[32px] md:rounded-[48px] py-24 md:py-32 overflow-hidden"
+      className="relative w-full bg-night text-bone rounded-[32px] md:rounded-[48px] py-20 md:py-24 overflow-hidden"
     >
       <div
         aria-hidden
@@ -70,11 +70,11 @@ export default function About() {
       <div className="shell relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-7 order-2 lg:order-1">
-            <Reveal className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone/45 mb-7">
+            <Reveal className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone/45 mb-5">
               Abdul Manan · Full Stack &amp; AI Engineer
             </Reveal>
 
-            <SplitHeading className="title-lg mb-9">
+            <SplitHeading className="text-[clamp(28px,3.3vw,54px)] leading-[1] mb-7">
               <span className="block text-bone">The developer</span>
               <span className="block text-bone">
                 behind <span className="hero-mark">the build.</span>
@@ -84,11 +84,11 @@ export default function About() {
             <WordLight
               from="rgba(242, 239, 232, 0.24)"
               to="#F2EFE8"
-              className="text-[19px] md:text-[23px] leading-[1.5] font-display font-medium tracking-[-0.01em] max-w-[700px] mb-6"
+              className="text-[17px] md:text-[19px] leading-[1.5] font-display font-medium tracking-[-0.01em] max-w-[620px] mb-5"
               text="I'm Abdul Manan, a full stack and AI engineer. I build web apps with Next.js and React, mobile apps with Flutter, and AI agents that chat, answer the phone and automate the busy work, for businesses that need them to run every day."
             />
 
-            <Reveal className="text-bone/60 text-[16px] md:text-[17px] leading-[1.65] max-w-[640px] mb-9">
+            <Reveal className="text-bone/60 text-[15px] md:text-[16px] leading-[1.6] max-w-[580px] mb-7">
               <p>
                 I started as a Python developer at BuiltinSoft and now work at CodAgentic,
                 building AI-powered products end to end: the backend, the frontend and the
@@ -96,7 +96,7 @@ export default function About() {
               </p>
             </Reveal>
 
-            <ul data-focus className="flex flex-wrap gap-2 mb-12">
+            <ul data-focus className="flex flex-wrap gap-2 mb-9">
               {FOCUS.map((item) => (
                 <li
                   key={item}
@@ -108,14 +108,14 @@ export default function About() {
               ))}
             </ul>
 
-            <span data-stats-rule aria-hidden className="block h-px w-full max-w-[720px] bg-white/15" />
+            <span data-stats-rule aria-hidden className="block h-px w-full max-w-[640px] bg-white/15" />
             <Reveal
               stagger
-              className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 pt-9 max-w-[720px]"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-y-7 gap-x-4 pt-7 max-w-[640px]"
             >
               {STATS.map((stat) => (
                 <div key={stat.label}>
-                  <div className="font-display font-bold text-bone text-[clamp(34px,3.2vw,52px)] tracking-[-0.04em] leading-none">
+                  <div className="font-display font-bold text-bone text-[clamp(28px,2.6vw,42px)] tracking-[-0.04em] leading-none">
                     <CountUp value={stat.value} pad={stat.pad} />
                     <span className="text-lime">{stat.suffix}</span>
                   </div>
@@ -128,7 +128,7 @@ export default function About() {
           </div>
 
           <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
-            <div data-portrait className="group relative w-full max-w-[440px]">
+            <div data-portrait className="group relative w-full max-w-[360px]">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] border border-white/10 bg-[#161614]">
                 <img
                   src="/manan.webp"

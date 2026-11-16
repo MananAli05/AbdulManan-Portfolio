@@ -222,7 +222,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
               as="h1"
               immediate
               delay={0.05}
-              className="lg:col-span-7 text-[clamp(56px,9.4vw,168px)] leading-[0.88]"
+              className="lg:col-span-7 text-[clamp(46px,7vw,116px)] leading-[0.88]"
             >
               <span className="block text-ink">{study.title}</span>
             </SplitHeading>
@@ -278,7 +278,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
           </Reveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-            <SplitHeading className="lg:col-span-7 text-[clamp(34px,4.6vw,76px)] leading-[1]">
+            <SplitHeading className="lg:col-span-7 text-[clamp(28px,3.5vw,56px)] leading-[1]">
               <span className="block text-ink">{study.challenge.statement}</span>
             </SplitHeading>
             <Reveal className="lg:col-span-5 lg:pt-3 flex flex-col gap-5 text-body text-[16px] md:text-[17px] leading-[1.65]">
@@ -316,7 +316,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                   <Reveal className={`${EYEBROW} mb-7`}>
                     {pad(i + 1)} / {feature.label}
                   </Reveal>
-                  <SplitHeading className="text-[clamp(30px,3.6vw,58px)] leading-[1.02] mb-6">
+                  <SplitHeading className="text-[clamp(26px,2.8vw,44px)] leading-[1.02] mb-6">
                     <span className="block text-ink">{feature.title}</span>
                   </SplitHeading>
                   <Reveal>
@@ -362,7 +362,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
                 <Reveal className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/50 mb-8">
                   How it connects
                 </Reveal>
-                <SplitHeading className="text-[clamp(34px,4.6vw,76px)] leading-[1]">
+                <SplitHeading className="text-[clamp(28px,3.5vw,56px)] leading-[1]">
                   <span className="block text-bone">{study.flow.title}</span>
                 </SplitHeading>
               </div>
@@ -427,7 +427,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
           <Reveal className={`${EYEBROW} mb-9`}>
             Engineering highlights
           </Reveal>
-          <SplitHeading className="text-[clamp(34px,4.6vw,76px)] leading-[1] max-w-[14em] mb-14 md:mb-20">
+          <SplitHeading className="text-[clamp(28px,3.5vw,56px)] leading-[1] max-w-[14em] mb-14 md:mb-20">
             <span className="block text-ink">The parts you do not see.</span>
           </SplitHeading>
 
@@ -452,7 +452,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
               <Reveal className={`${EYEBROW} mb-9`}>
                 Technology
               </Reveal>
-              <SplitHeading className="text-[clamp(34px,4.2vw,68px)] leading-[1]">
+              <SplitHeading className="text-[clamp(28px,3.3vw,52px)] leading-[1]">
                 <span className="block text-ink">{study.stack.title}</span>
               </SplitHeading>
             </div>
@@ -487,7 +487,7 @@ export default function CaseStudyPage({ study }: { study: CaseStudy }) {
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/50 mb-8">
               Have a similar project?
             </p>
-            <SplitHeading className="text-[clamp(40px,7vw,128px)] leading-[0.92] mb-12">
+            <SplitHeading className="text-[clamp(34px,5.2vw,88px)] leading-[0.92] mb-12">
               <span className="block text-bone">Let's build the</span>
               <span className="block text-bone">
                 <span className="hero-mark">system</span> behind it.

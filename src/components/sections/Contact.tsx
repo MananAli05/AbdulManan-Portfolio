@@ -84,7 +84,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" ref={rootRef} className="relative w-full bg-cream pt-8 pb-24 md:pt-12 md:pb-32">
+    <section id="contact" ref={rootRef} className="relative w-full bg-cream pt-6 pb-20 md:pt-8 md:pb-24">
       <div className="shell">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-[120px]">
@@ -96,7 +96,7 @@ export default function Contact() {
             </SplitHeading>
 
             <Reveal className="mb-10">
-              <p className="text-body text-[17px] md:text-[19px] leading-[1.55] max-w-[480px]">
+              <p className="text-body text-[16px] md:text-[17px] leading-[1.55] max-w-[460px]">
                 Tell me what you want to build: an app, a web product or an AI agent. I'll
                 reply with how I would approach it.
               </p>
@@ -119,7 +119,7 @@ export default function Contact() {
                   <a
                     href={href}
                     {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex items-center gap-4 py-5 border-b border-ink/15"
+                    className="group flex items-center gap-4 py-4 border-b border-ink/15"
                   >
                     <span className="grid place-items-center w-11 h-11 rounded-full bg-white border border-ink/10 text-ink shrink-0 transition-colors duration-300 group-hover:bg-lime group-hover:border-lime">
                       <Icon className="w-[17px] h-[17px]" />
@@ -148,7 +148,7 @@ export default function Contact() {
             <form
               data-form
               onSubmit={handleSubmit}
-              className="relative rounded-[32px] bg-night text-bone p-7 sm:p-10 lg:p-12 flex flex-col gap-7 overflow-hidden"
+              className="relative rounded-[32px] bg-night text-bone p-7 sm:p-9 lg:p-10 flex flex-col gap-6 overflow-hidden"
             >
               <div
                 aria-hidden

@@ -11,7 +11,7 @@ const STEP_LOCK_MS = 1050;
 const pad = (n: number) => String(n).padStart(2, '0');
 
 function usePinned(): boolean {
-  const query = '(min-width: 1024px) and (min-height: 720px)';
+  const query = '(min-width: 1024px) and (min-height: 620px)';
   const [pinned, setPinned] = useState<boolean>(
     () => typeof window !== 'undefined' && !prefersReducedMotion() && window.matchMedia(query).matches
   );
@@ -36,7 +36,7 @@ function openCaseStudy(e: MouseEvent<HTMLAnchorElement>, url: string) {
 
 function ProjectLinks({ project }: { project: Project }) {
   const link =
-    'group inline-flex items-center gap-2.5 pb-2 border-b border-ink/30 text-ink text-[15px] transition-colors duration-300 hover:border-ink';
+    'group inline-flex items-center gap-2.5 pb-1.5 border-b border-ink/30 text-ink text-[14px] transition-colors duration-300 hover:border-ink';
   const arrow =
     'text-[13px] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5';
 
@@ -81,7 +81,7 @@ function TechTags({ tech }: { tech: string[] }) {
         {tech.map((name) => (
           <li
             key={name}
-            className="inline-flex items-center gap-2 h-9 pl-2.5 pr-3.5 rounded-[8px] border border-ink/12 bg-white text-[13px] font-medium text-ink"
+            className="inline-flex items-center gap-2 h-8 pl-2.5 pr-3 rounded-[8px] border border-ink/12 bg-white text-[12px] font-medium text-ink"
           >
             <TechIcon name={name} />
             {name}
@@ -94,9 +94,9 @@ function TechTags({ tech }: { tech: string[] }) {
 
 function SectionHead({ active, total }: { active: number | null; total: number }) {
   return (
-    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12 pb-6 border-b border-ink/15">
+    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12 pb-5 border-b border-ink/15">
       <div>
-        <h2 className="text-ink text-[clamp(38px,4.6vw,78px)] leading-[0.95]">
+        <h2 className="text-ink text-[clamp(28px,3.3vw,54px)] leading-[1]">
           Featured <span className="hero-mark">projects.</span>
         </h2>
       </div>
@@ -109,7 +109,7 @@ function SectionHead({ active, total }: { active: number | null; total: number }
 
         {active !== null && (
           <div className="shrink-0" aria-label={`Project ${active + 1} of ${total}`}>
-            <p className="font-display font-medium text-ink text-[40px] leading-none tracking-[-0.03em] text-right tabular-nums">
+            <p className="font-display font-medium text-ink text-[32px] leading-none tracking-[-0.03em] text-right tabular-nums">
               {pad(active + 1)}
               <span className="font-mono text-[12px] text-body tracking-normal"> / {pad(total)}</span>
             </p>
@@ -280,7 +280,7 @@ export default function Projects() {
         style={{ height: `calc(100svh + ${total * SCROLL_PER_PROJECT_SVH}svh)` }}
       >
         <div className="sticky top-0 h-[100svh] overflow-hidden">
-          <div className="shell h-full flex flex-col pt-[106px] pb-7">
+          <div className="shell h-full flex flex-col pt-[102px] pb-6">
             <SectionHead active={active} total={total} />
 
             <div className="relative flex-1 min-h-0 grid">
@@ -290,7 +290,7 @@ export default function Projects() {
                   <article
                     key={project.id}
                     inert={state !== 'on'}
-                    className={`col-start-1 row-start-1 min-h-0 grid grid-cols-12 gap-8 xl:gap-12 items-center pt-6 transition-opacity duration-500 ${
+                    className={`col-start-1 row-start-1 min-h-0 grid grid-cols-12 gap-8 xl:gap-12 items-center pt-5 transition-opacity duration-500 ${
                       state === 'on' ? 'opacity-100 delay-150' : 'opacity-0 pointer-events-none'
                     }`}
                   >
@@ -303,17 +303,17 @@ export default function Projects() {
                             : 'translate-y-12'
                       }`}
                     >
-                      <p className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-body mb-5">
+                      <p className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-body mb-4">
                         {project.category}
                         {project.status && <StatusPill status={project.status} />}
                       </p>
-                      <h3 className="text-ink text-[clamp(34px,3.7vw,68px)] leading-[0.96] mb-5">
+                      <h3 className="text-ink text-[clamp(28px,2.9vw,48px)] leading-[1] mb-4">
                         {project.title}
                       </h3>
-                      <p className="text-body text-[15px] xl:text-[17px] leading-[1.6] mb-6 line-clamp-5">
+                      <p className="text-body text-[14px] xl:text-[15px] leading-[1.6] mb-5 line-clamp-5">
                         {project.description}
                       </p>
-                      <div className="mb-7">
+                      <div className="mb-6">
                         <TechTags tech={project.tech} />
                       </div>
                       <ProjectLinks project={project} />
@@ -331,7 +331,7 @@ export default function Projects() {
                       <img
                         src={project.image}
                         alt={`${project.title} preview`}
-                        className="block w-auto h-auto max-w-full max-h-[min(calc(100svh-272px),760px)] rounded-[24px] border border-ink/10"
+                        className="block w-auto h-auto max-w-full max-h-[min(calc(100svh-250px),640px)] rounded-[24px] border border-ink/10"
                       />
                     </div>
                   </article>

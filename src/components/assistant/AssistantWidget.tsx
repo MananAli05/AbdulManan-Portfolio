@@ -30,6 +30,14 @@ interface ChatMessage {
 
 type CallStatus = 'READY' | 'CONNECTING' | 'LISTENING' | 'MANAN AI SPEAKING' | 'CALL ENDED' | 'ERROR';
 
+const plainText = (text: string) =>
+  text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/`(.+?)`/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^\s*[*-]\s+/gm, '• ');
+
 const INITIAL_QUESTIONS = [
   "What AI projects has Manan built?",
   "What is Manan's experience?",
@@ -639,35 +647,18 @@ export default function AssistantWidget() {
                   {chatMessages.map((msg) => (
                     <div
                       key={msg.id}
-                      style={{
-                        fontFamily: 'Arial, Helvetica, sans-serif',
-                        lineHeight: '1.6',
-                        letterSpacing: '0',
-                        textRendering: 'optimizeLegibility',
-                      }}
-                      className={`max-w-[88%] sm:max-w-[85%] rounded-2xl transition-all p-3 sm:p-4 text-sm sm:text-[15px] break-words [overflow-wrap:anywhere] ${
+                      className={`max-w-[88%] sm:max-w-[85%] rounded-2xl p-3 sm:p-4 text-sm sm:text-[15px] leading-[1.6] text-ink break-words [overflow-wrap:anywhere] shadow-sm ${
                         msg.sender === 'user'
-                          ? 'ml-auto bg-lime text-ink font-medium rounded-br-xs shadow-sm'
-                          : 'mr-auto bg-cream border border-lime/25 text-ink font-normal rounded-bl-xs shadow-sm'
+                          ? 'ml-auto bg-lime font-medium rounded-br-xs'
+                          : 'mr-auto bg-cream border border-ink/10 rounded-bl-xs whitespace-pre-line'
                       }`}
                     >
-                      <span
-                        style={{
-                          fontFamily: 'Arial, Helvetica, sans-serif',
-                          fontWeight: msg.sender === 'user' ? 500 : 400,
-                          lineHeight: '1.6',
-                          letterSpacing: '0',
-                          color: msg.sender === 'user' ? '#000000' : '#FFFFFF',
-                          display: 'block',
-                        }}
-                      >
-                        {msg.isVoiceNote && (
-                          <div className="flex items-center gap-1.5 text-[11px] font-sans font-semibold text-ink/80 mb-1.5 pb-1 border-b border-ink/15">
-                            <span>{msg.voiceDuration || '0:04'}</span>
-                          </div>
-                        )}
-                        {msg.text}
-                      </span>
+                      {msg.isVoiceNote && (
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-ink/80 mb-1.5 pb-1 border-b border-ink/15">
+                          <span>{msg.voiceDuration || '0:04'}</span>
+                        </div>
+                      )}
+                      {msg.sender === 'user' ? msg.text : plainText(msg.text)}
                     </div>
                   ))}
 
@@ -692,11 +683,11 @@ export default function AssistantWidget() {
             </div>
 
             {voiceError && (
-              <div className="px-3 py-1.5 bg-red-950/40 border-t border-red-800/40 text-red-300 text-[11px] flex items-center justify-between shrink-0">
+              <div className="px-3 py-1.5 bg-red-50 border-t border-red-200 text-red-700 text-[11px] flex items-center justify-between shrink-0">
                 <span>{voiceError}</span>
                 <button
                   onClick={() => setVoiceError(null)}
-                  className="p-1 hover:text-white"
+                  className="p-1 hover:text-red-900 cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -721,7 +712,7 @@ export default function AssistantWidget() {
                     <button
                       type="button"
                       onClick={cancelRecording}
-                      className="p-2 sm:p-1.5 text-body hover:text-red-400 hover:bg-red-950/40 rounded-lg transition-colors cursor-pointer min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
+                      className="p-2 sm:p-1.5 text-body hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                       title="Cancel Recording"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -765,7 +756,7 @@ export default function AssistantWidget() {
                       type="button"
                       onClick={cancelRecording}
                       disabled={isTranscribing}
-                      className="p-1.5 text-body hover:text-red-400 hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50 min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
+                      className="p-1.5 text-body hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer disabled:opacity-50 min-w-[36px] min-h-[36px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                       title="Delete Voice Note"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -950,7 +941,7 @@ export default function AssistantWidget() {
               </div>
 
               {voiceCallError && (
-                <div className="w-full bg-red-950/40 border border-red-800/40 px-3 py-2 rounded-xl text-red-300 text-xs font-sans mb-3 text-center">
+                <div className="w-full bg-red-50 border border-red-200 px-3 py-2 rounded-xl text-red-700 text-xs font-sans mb-3 text-center">
                   {voiceCallError}
                 </div>
               )}

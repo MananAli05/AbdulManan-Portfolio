@@ -11,8 +11,8 @@ const RELEASES = ['v0.1', 'v0.2', 'v0.3', 'v0.4', 'Launch'];
 
 const DECISIONS = ['Approve', 'Change', 'Pause'];
 
-const CARD_TITLE = 'text-[clamp(26px,2.3vw,40px)] leading-[1] tracking-[-0.02em]';
-const CARD_COPY = 'mt-3 text-[15px] leading-[1.55]';
+const CARD_TITLE = 'text-[clamp(22px,1.9vw,32px)] leading-[1] tracking-[-0.02em]';
+const CARD_COPY = 'mt-2.5 text-[14px] leading-[1.55]';
 const CARD_INDEX = 'font-mono text-[11px] tracking-[0.14em] shrink-0 pt-1.5';
 export default function Bento() {
   const rootRef = useRef<HTMLElement>(null);
@@ -101,10 +101,10 @@ export default function Bento() {
     <section
       id="approach"
       ref={rootRef}
-      className="relative w-full bg-cream py-24 md:py-28"
+      className="relative w-full bg-cream py-20 md:py-24"
     >
       <div className="shell">
-        <SplitHeading className="title-lg mb-10 md:mb-12">
+        <SplitHeading className="title-lg mb-8 md:mb-10">
           <span className="block text-ink">One developer.</span>
           <span className="block text-ink">
             The <span className="hero-mark">whole build.</span>
@@ -113,7 +113,7 @@ export default function Bento() {
 
         <div
           data-bento-grid
-          className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5 lg:h-[clamp(600px,calc(100svh-150px),760px)]"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5 lg:h-[clamp(570px,calc(100svh-136px),680px)]"
         >
           <article
             data-bento-card
@@ -201,7 +201,7 @@ export default function Bento() {
                   <div
                     role="img"
                     aria-label="More than 2,300 customers served"
-                    className="relative grid place-items-center w-[120px] h-[120px] md:w-[148px] md:h-[148px] rounded-full bg-night text-bone"
+                    className="relative grid place-items-center w-[112px] h-[112px] md:w-[128px] md:h-[128px] rounded-full bg-night text-bone"
                   >
                     <svg viewBox="0 0 124 124" className="absolute inset-0 w-full h-full -rotate-90" fill="none">
                       <circle cx="62" cy="62" r="50" stroke="rgba(242,239,232,0.14)" strokeWidth="6" />
@@ -217,7 +217,7 @@ export default function Bento() {
                         strokeDasharray={1}
                       />
                     </svg>
-                    <span className="font-display font-bold text-[25px] md:text-[32px] tracking-[-0.04em] leading-none">
+                    <span className="font-display font-bold text-[23px] md:text-[27px] tracking-[-0.04em] leading-none">
                       <CountUp value={2300} group />
                       <span className="text-lime">+</span>
                     </span>
