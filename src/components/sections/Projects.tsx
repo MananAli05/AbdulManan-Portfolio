@@ -195,6 +195,7 @@ export default function Projects() {
 
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      if ((e.target as HTMLElement).closest?.('[data-lenis-prevent]')) return;
       const now = performance.now();
       lastWheelAt = now;
       jumpingUntil = 0;

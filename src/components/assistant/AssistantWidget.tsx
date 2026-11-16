@@ -52,6 +52,26 @@ export default function AssistantWidget() {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const keepScrollInside = (e: WheelEvent) => {
+      const scroller = (e.target as HTMLElement).closest<HTMLElement>('.overflow-y-auto');
+      const room = scroller ? scroller.scrollHeight - scroller.clientHeight : 0;
+      const atEdge =
+        !scroller ||
+        room <= 0 ||
+        (e.deltaY < 0 && scroller.scrollTop <= 0) ||
+        (e.deltaY > 0 && scroller.scrollTop >= room - 1);
+      if (atEdge) e.preventDefault();
+    };
+
+    panel.addEventListener('wheel', keepScrollInside, { passive: false });
+    return () => panel.removeEventListener('wheel', keepScrollInside);
+  }, []);
 
   const [callStatus, setCallStatus] = useState<CallStatus>('READY');
   const [isMuted, setIsMuted] = useState(false);
@@ -543,6 +563,8 @@ export default function AssistantWidget() {
   return (
     <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-8 z-[100] max-w-full pb-[env(safe-area-inset-bottom,0px)] pr-[env(safe-area-inset-right,0px)]">
       <div
+        ref={panelRef}
+        data-lenis-prevent
         style={{
           maxHeight: viewportHeight && window.innerWidth < 640 ? `${viewportHeight - 140}px` : undefined,
         }}
