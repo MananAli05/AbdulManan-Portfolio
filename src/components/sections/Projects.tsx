@@ -156,10 +156,14 @@ export default function Projects() {
     };
     const positionOf = (i: number, g: ReturnType<typeof geometry>) =>
       Math.round(g.pageTop + g.travel * ((i + 0.5) / total));
-    const scrollToProject = (i: number, g: ReturnType<typeof geometry>, duration = 0.9) => {
-      window.dispatchEvent(
-        new CustomEvent('lenis:scroll-top', { detail: { top: positionOf(i, g), duration } })
-      );
+    const scrollTo = (top: number, duration = 0.9) => {
+      window.dispatchEvent(new CustomEvent('lenis:scroll-top', { detail: { top, duration } }));
+    };
+    const scrollToProject = (i: number, g: ReturnType<typeof geometry>, duration = 0.9) =>
+      scrollTo(positionOf(i, g), duration);
+    const leaveSection = (down: boolean, g: ReturnType<typeof geometry>) => {
+      const offset = window.innerHeight * 0.6;
+      scrollTo(down ? g.pageTop + g.travel + offset : g.pageTop - offset);
     };
 
     let frame = 0;
@@ -194,7 +198,7 @@ export default function Projects() {
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      if (e.ctrlKey || !e.deltaY || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
       if ((e.target as HTMLElement).closest?.('[data-lenis-prevent]')) return;
       const now = performance.now();
       lastWheelAt = now;
@@ -209,14 +213,14 @@ export default function Projects() {
         return;
       }
 
-      const current = indexAt(g.top, g.travel);
-      const next = current + (e.deltaY > 0 ? 1 : -1);
-      if (next < 0 || next > total - 1) return;
-
       e.preventDefault();
       e.stopPropagation();
       lockedUntil = now + STEP_LOCK_MS;
-      scrollToProject(next, g);
+
+      const down = e.deltaY > 0;
+      const next = indexAt(g.top, g.travel) + (down ? 1 : -1);
+      if (next < 0 || next >= total) leaveSection(down, g);
+      else scrollToProject(next, g);
     };
 
     measure();
