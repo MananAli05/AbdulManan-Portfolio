@@ -240,7 +240,12 @@ export default function AssistantWidget() {
         throw new Error('Failed to create Retell call session.');
       }
 
-      const data = (await res.json()) as { access_token?: string };
+      const data = (await res.json()) as {
+        access_token?: string;
+        call_id?: string;
+        transport?: 'gateway' | 'livekit';
+        ice_servers?: RTCIceServer[];
+      };
       if (!data.access_token) {
         throw new Error('No access token returned by server.');
       }
@@ -278,6 +283,9 @@ export default function AssistantWidget() {
 
       await client.startCall({
         accessToken: data.access_token,
+        callId: data.call_id,
+        transport: data.transport,
+        iceServers: data.ice_servers,
       });
     } catch (err: unknown) {
       console.error('[Start Retell Call Error]', err);

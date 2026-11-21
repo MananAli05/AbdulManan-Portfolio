@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const response = await fetch('https://api.retellai.com/v2/create-web-call', {
+    const response = await fetch('https://api.retellai.com/v3/create-web-call', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -31,7 +31,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(response.status).json({ error: 'Failed to create Retell web call.' });
     }
 
-    const data = (await response.json()) as { access_token?: string; call_id?: string };
+    const data = (await response.json()) as {
+      access_token?: string;
+      call_id?: string;
+      transport?: string;
+      ice_servers?: unknown[];
+    };
 
     if (!data.access_token) {
       console.error('[Retell API Error] Response missing access_token:', data);
@@ -41,6 +46,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       access_token: data.access_token,
       call_id: data.call_id,
+      transport: data.transport,
+      ice_servers: data.ice_servers,
     });
   } catch (error: unknown) {
     console.error('[Retell Endpoint Error]:', error instanceof Error ? error.message : error);
